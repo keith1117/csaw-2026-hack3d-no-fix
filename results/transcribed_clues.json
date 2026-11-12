@@ -1,0 +1,11 @@
+{
+  "note": "We read these inscriptions from the exported geometry views. They are manual transcriptions, not OCR output.",
+  "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",
+  "board_instruction": "Every square has a value, whether occupied or bare. Begin at the highest rank, and read each row with care. Six at a time will reveal what you seek; the knight's missing instructions are hidden in this technique. Once the message is revealed, append it to https://tinyurl.com/ to uncover what has been concealed.",
+  "rook_cipher": "Zkdw lv wkh ehvw slhfh iru d sdzq wr wxuq lq wr?",
+  "pawn_password": "Queen",
+  "height_labels": ["King", "Queen", "Rook", "Bishop", "Knight", "Pawn"],
+  "height_note": "Final sizes may not be reflected in prototype parts",
+  "height_unit": "cm",
+  "king_inscription": "https://drive.google.com/file/d/1Kk8K4bplqJWDCqiRtARlxXEeBVDJ-CKM/view?usp=drive_link  Metal Units produced using this method"
+}

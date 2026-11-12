@@ -1,0 +1,293 @@
+{
+  "assembly_solid_instances": 129,
+  "pawn_count": 37,
+  "occupancy": [
+    [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    [
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      1,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "pawn_squares": [
+    {
+      "solid": 92,
+      "square": "A2"
+    },
+    {
+      "solid": 93,
+      "square": "A3"
+    },
+    {
+      "solid": 94,
+      "square": "A4"
+    },
+    {
+      "solid": 95,
+      "square": "A5"
+    },
+    {
+      "solid": 96,
+      "square": "A7"
+    },
+    {
+      "solid": 97,
+      "square": "B5"
+    },
+    {
+      "solid": 98,
+      "square": "B4"
+    },
+    {
+      "solid": 99,
+      "square": "B2"
+    },
+    {
+      "solid": 100,
+      "square": "B1"
+    },
+    {
+      "solid": 101,
+      "square": "C1"
+    },
+    {
+      "solid": 102,
+      "square": "C2"
+    },
+    {
+      "solid": 103,
+      "square": "C3"
+    },
+    {
+      "solid": 104,
+      "square": "C6"
+    },
+    {
+      "solid": 105,
+      "square": "C7"
+    },
+    {
+      "solid": 106,
+      "square": "D8"
+    },
+    {
+      "solid": 107,
+      "square": "D5"
+    },
+    {
+      "solid": 108,
+      "square": "D4"
+    },
+    {
+      "solid": 109,
+      "square": "D3"
+    },
+    {
+      "solid": 110,
+      "square": "D2"
+    },
+    {
+      "solid": 111,
+      "square": "E2"
+    },
+    {
+      "solid": 112,
+      "square": "E3"
+    },
+    {
+      "solid": 113,
+      "square": "E4"
+    },
+    {
+      "solid": 114,
+      "square": "E5"
+    },
+    {
+      "solid": 115,
+      "square": "E8"
+    },
+    {
+      "solid": 116,
+      "square": "F8"
+    },
+    {
+      "solid": 117,
+      "square": "F7"
+    },
+    {
+      "solid": 118,
+      "square": "F6"
+    },
+    {
+      "solid": 119,
+      "square": "F5"
+    },
+    {
+      "solid": 120,
+      "square": "F4"
+    },
+    {
+      "solid": 121,
+      "square": "G7"
+    },
+    {
+      "solid": 122,
+      "square": "G3"
+    },
+    {
+      "solid": 123,
+      "square": "G2"
+    },
+    {
+      "solid": 124,
+      "square": "H2"
+    },
+    {
+      "solid": 125,
+      "square": "H4"
+    },
+    {
+      "solid": 126,
+      "square": "H5"
+    },
+    {
+      "solid": 127,
+      "square": "H7"
+    },
+    {
+      "solid": 128,
+      "square": "H8"
+    }
+  ],
+  "bits": "0001110110100111001001001101110111011101101110101111101101100000",
+  "six_bit_groups": [
+    "000111",
+    "011010",
+    "011100",
+    "100100",
+    "110111",
+    "011101",
+    "110110",
+    "111010",
+    "111110",
+    "110110"
+  ],
+  "padding_bits": "0000",
+  "knight_url": "https://tinyurl.com/Hack3d26-2",
+  "material_qr_url": "https://tinyurl.com/Hack3d26",
+  "heights": [
+    {
+      "piece": "King",
+      "binary": "00001001",
+      "height_cm": 9,
+      "height_mm": 90
+    },
+    {
+      "piece": "Queen",
+      "binary": "00001000",
+      "height_cm": 8,
+      "height_mm": 80
+    },
+    {
+      "piece": "Rook",
+      "binary": "00000101",
+      "height_cm": 5,
+      "height_mm": 50
+    },
+    {
+      "piece": "Bishop",
+      "binary": "00000111",
+      "height_cm": 7,
+      "height_mm": 70
+    },
+    {
+      "piece": "Knight",
+      "binary": "00000110",
+      "height_cm": 6,
+      "height_mm": 60
+    },
+    {
+      "piece": "Pawn",
+      "binary": "00000101",
+      "height_cm": 5,
+      "height_mm": 50
+    }
+  ],
+  "rook_decoded_question": "What is the best piece for a pawn to turn in to?",
+  "pawn_password": "Queen",
+  "king_inscription": "https://drive.google.com/file/d/1Kk8K4bplqJWDCqiRtARlxXEeBVDJ-CKM/view?usp=drive_link  Metal Units produced using this method"
+}

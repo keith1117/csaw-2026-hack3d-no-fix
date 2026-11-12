@@ -1,0 +1,40 @@
+{
+  "retrieved_on": "2026-11-12",
+  "original_distribution": "The three files under inputs/ were supplied locally for the CSAW 2026 Hack3D final.",
+  "sources": [
+    {
+      "clue": "Embedded board QR, Y=3.175 mm",
+      "recovered_url": "https://tinyurl.com/Hack3d26",
+      "destination": "https://www.eos.info/var/assets/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/aluminium/material_datasheet_eos_aluminium_alf357_premium_en.pdf",
+      "title": "EOS Aluminium AlF357 material data sheet",
+      "local_delivery": "Official link only. The full third-party datasheet is not republished in our repository."
+    },
+    {
+      "clue": "37 pawn positions, six-bit alphabet lookup",
+      "recovered_url": "https://tinyurl.com/Hack3d26-2",
+      "destination": "https://drive.google.com/file/d/1vgwSromaUAm5hw45NycKgomDprsVD3Lu/view",
+      "local_file": "recovered/PI3MK2_K14.gcode",
+      "bytes": 11371798
+    },
+    {
+      "clue": "Fallback link near the end of the Knight G-code",
+      "destination": "https://drive.google.com/file/d/1b94MhZaxK8I5xzezqY1e8n1fdASWHZjL/view",
+      "local_file": "recovered/Knight-Full Assm.step",
+      "bytes": 3947243
+    },
+    {
+      "clue": "Engraving on the King's central solid",
+      "destination": "https://drive.google.com/file/d/1Kk8K4bplqJWDCqiRtARlxXEeBVDJ-CKM/view",
+      "local_file": "recovered/PI3MK2_King.gcode",
+      "bytes": 6745155
+    },
+    {
+      "clue": "Caesar -3 of the rook inscription, then answer Queen",
+      "source_file": "inputs/Pawn Files.zip",
+      "local_files": ["recovered/Pawn.STEP", "recovered/Pawn Exploded View.pdf"],
+      "verification": "Both complete archive members extracted with successful CRC checks."
+    }
+  ],
+  "submission_form_from_problem_pdf": "https://forms.gle/37FnBhtgzwHsPjmM9",
+  "form_status": "Not submitted. The team will upload manually."
+}

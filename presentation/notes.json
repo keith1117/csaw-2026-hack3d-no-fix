@@ -1,0 +1,98 @@
+[
+  {
+    "title": "A simple game of Chess",
+    "time": "0:00-0:35",
+    "seconds": 35,
+    "speech": "Hi, we are No Fix. Our challenge was to recover manufacturing information hidden in a chess assembly. We started with a STEP model, a problem statement, and an encrypted pawn archive. We will show how we inspected those files, followed the clues, and checked the results. The images in this presentation come from the supplied files or from our analysis of their geometry and toolpaths.",
+    "zh": "开场先介绍 No Fix。说明任务是从文件中找制造信息，不要说我们已完成实体制造。封面图来自题目说明。",
+    "sources": ["inputs/Hack3d 2026 Final Challenge Problem Statement.pdf, page 1"]
+  },
+  {
+    "title": "The starting files",
+    "time": "0:35-1:15",
+    "seconds": 40,
+    "speech": "The distribution had three files. The chess STEP was our main source of clues. The PDF explained what we needed to submit, and the ZIP contained pawn files that needed a password. We first searched the STEP as text. That gave us part names and export information, but no readable password. We then inspected the geometry itself. We kept the original files unchanged and recorded hashes so that our results refer to the exact files we received.",
+    "zh": "强调三个输入文件及各自作用。文本搜索只看到名称，下一步才转向几何。不要把未成功的字符串搜索说成成功解密。",
+    "sources": ["inputs/Chess Board.STEP", "inputs/Pawn Files.zip", "results/source_checksums.json"]
+  },
+  {
+    "title": "Looking inside the STEP model",
+    "time": "1:15-2:00",
+    "seconds": 45,
+    "speech": "Our script loaded the STEP assembly and applied its placements. It found 129 solid instances, including 37 repeated pawn shapes. Several clues sat inside the board or inside other pieces, so an outside view was not enough. We drew selected flat faces and removed covering geometry from the inspection views. This cutaway shows why that helped with the king: its outer shape hides a lattice and a narrow central body. We also kept manual transcriptions separate from the code, because our script does not automatically read every geometric letter.",
+    "zh": "解释为什么需要内部查看。129 是 solid instances，不等于 129 种零件。几何文字由我们读取，采样和解码由脚本完成。",
+    "sources": ["inputs/Chess Board.STEP", "src/analyze.py", "results/transcribed_clues.json"]
+  },
+  {
+    "title": "The QR pattern inside the board",
+    "time": "2:00-2:45",
+    "seconds": 45,
+    "speech": "Inside one board layer we found a pattern with three QR corner markers. A direct scan failed because the physical modules had gaps. We sampled the center of each module in a 25 by 25 grid, filled the modules, and added a white border. The restored code decoded to tinyurl dot com slash Hack3d26. We followed the redirect to the official AlF357 material sheet. We recorded that material source separately from the prototype files, and kept its original link so the full specification remains available.",
+    "zh": "指一下三个定位角。说明失败原因是物理格子之间有间隔，中心采样后才能扫。这里只讲材料名称，具体工艺表在 report。",
+    "sources": ["evidence/qr_geometry.png", "evidence/qr_restored.png", "https://tinyurl.com/Hack3d26", "https://www.eos.info/var/assets/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/aluminium/material_datasheet_eos_aluminium_alf357_premium_en.pdf"]
+  },
+  {
+    "title": "The pawn positions form a bit stream",
+    "time": "2:45-3:45",
+    "seconds": 60,
+    "speech": "The board's edge told us that every square had a value, whether occupied or empty. It also said to begin at the highest rank and read six at a time. That suggested binary data. We assigned one to a square with a pawn and zero to an empty square. We mapped all 37 pawn centers to the eight by eight grid and checked that no square received two pawns. Our first row direction gave an unhelpful string. We checked the engraved rank labels and found that rank eight was on the negative Z side of the imported model. Reading rank eight first, then A through H in each row, gave the bit stream shown here.",
+    "zh": "这一页要慢一点：occupied=1，empty=0；先 rank 8，每行 A 到 H。可以指第一行 00011101。第一次方向错是实际发生的尝试。",
+    "sources": ["evidence/board_instruction.png", "evidence/rank_labels_geometry.png", "results/decoded.json"]
+  },
+  {
+    "title": "Six bits at a time",
+    "time": "3:45-4:35",
+    "seconds": 50,
+    "speech": "We also found an alphabet with 64 characters on the board. Six bits can represent the numbers zero through 63, so each group gave us an index into that alphabet. For example, 000111 is seven, which selects H. The next groups give a, c, and k. The first 60 bits spell Hack3d26-2. Four zero bits remain at the end of the board. Extending those into another full group would add an A. We kept the ten-character message, followed the resulting short link, and received a Knight G-code file. That actual redirect checked our interpretation.",
+    "zh": "展示一个完整例子：000111=7，索引从 0 开始，第 7 位是 H。解释总共 64 位，只使用前 60 位，末尾 0000 记录为剩余位。有效跳转确认十字符结果。",
+    "sources": ["evidence/alphabet.png", "results/decoded.json", "https://tinyurl.com/Hack3d26-2"]
+  },
+  {
+    "title": "The final height table",
+    "time": "4:35-5:15",
+    "seconds": 40,
+    "speech": "A second binary pattern on the bottom had six labeled rows. We read shallow positions as one and deep positions as zero. The rows decoded to nine, eight, five, seven, six, and five. The labels identify the pieces, and the nearby ruler says centimeters. This gives the target heights in the table. Another note says that final sizes may not match the prototype parts. We therefore kept these target values separate from the current CAD dimensions instead of treating every bounding box as a final size.",
+    "zh": "按表快速读出 K9、Q8、R5、B7、Kn6、P5 cm。强调 final target 与 prototype geometry 分开，复杂机构不能盲目整体缩放。",
+    "sources": ["evidence/height_geometry.png", "evidence/cm_ruler.png", "evidence/prototype_note.png", "results/decoded.json"]
+  },
+  {
+    "title": "The rook gives the ZIP password",
+    "time": "5:15-6:00",
+    "seconds": 45,
+    "speech": "The rook had an encrypted sentence near its base. We isolated the lettering and tried a Caesar shift. Moving each letter back three places changed Zkdw into What, and the full line asked what the best piece was for a pawn to turn into. We tried Queen, with an uppercase Q, as the archive password. Both files extracted successfully and passed their ZIP checks. This was stronger evidence than just guessing a chess word. Earlier guesses based on the heights and short links had failed.",
+    "zh": "先指 Zkdw，再讲减 3 得到 What。Queen 要大写 Q。成功依据是两个 ZIP 成员都通过 CRC，不是只看到一个文件名。",
+    "sources": ["evidence/rook_cipher.png", "inputs/Pawn Files.zip", "results/transcribed_clues.json"]
+  },
+  {
+    "title": "The recovered Queen-Pawn assembly",
+    "time": "6:00-6:45",
+    "seconds": 45,
+    "speech": "The archive contained a STEP assembly and this exploded drawing, labeled Queen-Pawn. The STEP opened as 31 solid instances. The drawing uses 21 part labels, with repeated quantities that also total 31 printed pieces. It adds hardware information that the simple pawn outside shape did not provide. We recorded two magnets, two small springs, one larger spring, and the two pin sizes shown in the table. We preserved the original drawing and CAD so that the assembly positions and exact source dimensions can be inspected later.",
+    "zh": "区分 21 个标签与 31 个实际打印件。硬件按原图抄录，磁铁为 inch，其余 mm。我们没有实际装配测试，避免宣称功能验证成功。",
+    "sources": ["recovered/Pawn Exploded View.pdf, single page, Works by Design credit", "recovered/Pawn.STEP", "results/recovered_cad_checks.json"]
+  },
+  {
+    "title": "The King's linked toolpath",
+    "time": "6:45-7:35",
+    "seconds": 50,
+    "speech": "The king's central body carried a tiny Drive link. After enlarging the letters and correcting our first transcription, we downloaded the King G-code. This image shows its outer-wall extrusion paths reconstructed from the commands. The file uses a Prusa i3 MK2 profile, a 215 degree extruder setting, an 80 degree bed, and nominal 0.2 millimeter layers. It includes an ending with heater-off commands. We found one count mismatch: 337 layers in the header, but 336 marked sections. The inscription also mentions metal units, while the linked file contains filament extrusion commands. We report both facts without treating this as a tested metal build recipe.",
+    "zh": "区分内部链接与已下载文件。说明 King 有正常结束，但层数差 1。金属字样与 FDM 指令不一致，这个证据边界要主动讲清楚。",
+    "sources": ["evidence/king_inscription.png", "recovered/PI3MK2_King.gcode", "results/gcode_checks.json", "https://drive.google.com/file/d/1Kk8K4bplqJWDCqiRtARlxXEeBVDJ-CKM/view"]
+  },
+  {
+    "title": "The Knight file stops early",
+    "time": "7:35-8:40",
+    "seconds": 65,
+    "speech": "The Knight file had a larger problem. Its header declared 177 layers and a maximum Z of 34.95 millimeters. We found only 78 numbered sections, ending at layer 77, and the highest motion reached 15.75 millimeters. It also lacked the normal heater-off ending. Near the end, two plain-text lines explained what to do if the file was corrupted and supplied an original-model link. We followed that link and recovered Knight-Full Assm dot step. It opened as a full assembly with 61 solid instances. We kept the partial G-code unchanged and included that original model beside it. Adding an end command alone would not bring back the missing upper-layer geometry.",
+    "zh": "重点讲恢复路线：发现截断，读末尾备用链接，拿到原始 STEP。不要说我们修好了 G-code。表中 King 的小差异和 Knight 的缺失要区分。",
+    "sources": ["recovered/PI3MK2_K14.gcode", "recovered/Knight-Full Assm.step", "results/gcode_checks.json", "https://drive.google.com/file/d/1b94MhZaxK8I5xzezqY1e8n1fdASWHZjL/view"]
+  },
+  {
+    "title": "Our results and checks",
+    "time": "8:40-10:00",
+    "seconds": 80,
+    "speech": "Our main result is a set of recovered sources with a clear path back to each clue. We have the alloy specification link, six target heights, the pawn CAD and drawing, the King G-code, and the Knight G-code with its original STEP recovery. We checked the short-link destinations, the binary decodes, the ZIP members, the recovered CAD imports, and the G-code contents. We also recorded attempts that failed, including a direct QR scan, the wrong row direction, and several password guesses. Our repository includes the code, evidence views, original distribution, and recovered files. The report and upload packages keep those results together. We have not manufactured a finished set, so physical fit, printing, and final-size adjustments remain untested. Thank you. We are ready for your questions.",
+    "zh": "最后把结果逐项对回线索。留出几秒停顿，让观众看表。明确我们完成的是文件解题与证据整理，没有实体制造和公差验证。结尾邀请提问。",
+    "sources": ["results/decoded.json", "results/source_registry.json", "results/source_checksums.json", "README.md"]
+  }
+]

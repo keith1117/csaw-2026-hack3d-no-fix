@@ -1,0 +1,71 @@
+[
+  {
+    "filename": "PI3MK2_King.gcode",
+    "header_layer_count": 337,
+    "observed_layer_count": 336,
+    "first_layer": 0,
+    "last_layer": 335,
+    "header_max_z_mm": 67.15,
+    "observed_motion_max_z_mm": 67.15,
+    "nominal_layer_height_mm": 0.2,
+    "slicer_time_seconds": 7105,
+    "header_filament_m": " 4.34366m",
+    "extruder_setpoints_c": [
+      0.0,
+      215.0
+    ],
+    "bed_setpoints_c": [
+      0.0,
+      80.0
+    ],
+    "extruder_shutdown_present": true,
+    "bed_shutdown_present": true,
+    "non_gcode_lines": [],
+    "embedded_links": [],
+    "cura_settings": {
+      "global_quality": "[general]\\nversion = 4\\nname = Coarse #2\\ndefinition = prusa_i3_mk2\\n\\n[metadata]\\ntype = quality_changes\\nquality_type = coarse\\nsetting_version = 20\\n\\n[values]\\nadhesion_type = brim\\nlayer_height = 0.2\\nmaterial_bed_temperature = 80\\nsupport_enable = True\\nsupport_structure = tree\\n\\n",
+      "extruder_quality": [
+        "[general]\\nversion = 4\\nname = Coarse #2\\ndefinition = prusa_i3_mk2\\n\\n[metadata]\\ntype = quality_changes\\nquality_type = coarse\\nsetting_version = 20\\nposition = 0\\n\\n[values]\\nbottom_layers = 5\\ninfill_sparse_density = 10\\nmaterial_print_temperature = 215\\nraft_margin = 5\\ntop_layers = 5\\n\\n"
+      ]
+    }
+  },
+  {
+    "filename": "PI3MK2_K14.gcode",
+    "header_layer_count": 177,
+    "observed_layer_count": 78,
+    "first_layer": 0,
+    "last_layer": 77,
+    "header_max_z_mm": 34.95,
+    "observed_motion_max_z_mm": 15.75,
+    "nominal_layer_height_mm": 0.2,
+    "slicer_time_seconds": 12577,
+    "header_filament_m": " 7.65268m",
+    "extruder_setpoints_c": [
+      215.0
+    ],
+    "bed_setpoints_c": [
+      80.0
+    ],
+    "extruder_shutdown_present": false,
+    "bed_shutdown_present": false,
+    "non_gcode_lines": [
+      {
+        "line": 353917,
+        "text": "If  Corrupted please refer to original model"
+      },
+      {
+        "line": 353918,
+        "text": "https://drive.google.com/file/d/1b94MhZaxK8I5xzezqY1e8n1fdASWHZjL/view?usp=sharing"
+      }
+    ],
+    "embedded_links": [
+      "https://drive.google.com/file/d/1b94MhZaxK8I5xzezqY1e8n1fdASWHZjL/view?usp=sharing"
+    ],
+    "cura_settings": {
+      "global_quality": "[general]\\nversion = 4\\nname = Coarse #2\\ndefinition = prusa_i3_mk2\\n\\n[metadata]\\ntype = quality_changes\\nquality_type = coarse\\nsetting_version = 20\\n\\n[values]\\nadhesion_type = brim\\nlayer_height = 0.2\\nmaterial_bed_temperature = 80\\nsupport_enable = True\\nsupport_structure = tree\\n\\n",
+      "extruder_quality": [
+        "[general]\\nversion = 4\\nname = Coarse #2\\ndefinition = prusa_i3_mk2\\n\\n[metadata]\\ntype = quality_changes\\nquality_type = coarse\\nsetting_version = 20\\nposition = 0\\n\\n[values]\\nbottom_layers = 5\\ninfill_sparse_density = 10\\nmaterial_print_temperature = 215\\nraft_margin = 5\\ntop_layers = 5\\n\\n"
+      ]
+    }
+  }
+]

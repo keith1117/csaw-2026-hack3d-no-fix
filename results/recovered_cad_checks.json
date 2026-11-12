@@ -1,0 +1,32 @@
+[
+  {
+    "file": "Pawn.STEP",
+    "solid_instances": 31,
+    "mesh_min_mm": [
+      -64.20836248706726,
+      -19.786579092594298,
+      -0.596513106101499
+    ],
+    "mesh_max_mm": [
+      -27.914815902833745,
+      16.50243471512477,
+      61.005061986785
+    ],
+    "note": "Mesh envelope in the source coordinate frame, not a final piece height."
+  },
+  {
+    "file": "Knight-Full Assm.step",
+    "solid_instances": 61,
+    "mesh_min_mm": [
+      -61.33743924058602,
+      -19.423504204851263,
+      -2.946400000000001
+    ],
+    "mesh_max_mm": [
+      19.624301393513225,
+      19.671877042528713,
+      71.1406127697415
+    ],
+    "note": "Mesh envelope in the source coordinate frame, not a final piece height."
+  }
+]

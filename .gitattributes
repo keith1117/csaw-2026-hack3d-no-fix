@@ -1,0 +1,9 @@
+# Preserve the exact manufacturing source bytes and keep generated files out of text diffs.
+*.STEP binary
+*.step binary
+*.gcode binary
+*.pdf binary
+*.pptx binary
+*.zip binary
+*.png binary
+*.jpg binary
