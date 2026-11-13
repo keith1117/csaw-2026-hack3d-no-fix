@@ -5,142 +5,219 @@ import { Presentation, PresentationFile } from '@oai/artifact-tool';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(here);
-const build = path.join(here, 'build');
+const filename = process.argv[2] ?? 'No_Fix_7_Minute_Final.pptx';
+const build = path.join(here, 'build', path.parse(filename).name);
 const output = path.join(here, 'output');
 await fs.mkdir(build, { recursive: true });
 await fs.mkdir(output, { recursive: true });
 const notes = JSON.parse(await fs.readFile(path.join(here, 'notes.json'), 'utf8'));
+const data = JSON.parse(await fs.readFile(path.join(root, 'results', 'decoded.json'), 'utf8'));
 const deck = Presentation.create({ slideSize: { width: 1280, height: 720 } });
-const font = 'Arial';
-const ink = '#172529', red = '#B52C35', teal = '#1B5E63', paper = '#F7F5F0';
+const font = 'Times New Roman';
+const black = '#000000', gray = '#EDEDEB', rule = '#C8C8C5', paleRed = '#E7BDBF';
 
-function text(slide, words, x, y, w, h, size = 28, color = ink, bold = false, family = font) {
-  const box = slide.shapes.add({ geometry: 'textbox',
+function text(s, words, x, y, w, h, size = 28, bold = false, align = 'left') {
+  const b = s.shapes.add({ geometry: 'textbox', name: words.slice(0, 55),
     position: { left: x, top: y, width: w, height: h },
     fill: 'none', line: { fill: 'none', width: 0 } });
-  box.text = words;
-  box.text.style = { typeface: family, fontSize: size, color, bold };
-  return box;
+  b.text = words;
+  b.text.style = { typeface: font, fontSize: size, color: black, bold,
+    alignment: align, verticalAlignment: 'middle', insets: 0 };
+  return b;
 }
 
-async function image(slide, name, x, y, w, h, alt) {
-  const data = await fs.readFile(path.join(root, 'evidence', name));
-  slide.images.add({ blob: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength),
-    contentType: name.endsWith('.jpg') ? 'image/jpeg' : 'image/png',
-    alt, fit: 'contain', position: { left: x, top: y, width: w, height: h } });
+function rect(s, x, y, w, h, fill = gray, stroke = 'none') {
+  return s.shapes.add({ geometry: 'rect', position: { left: x, top: y, width: w, height: h },
+    fill, line: { fill: stroke, width: stroke === 'none' ? 0 : 1.2 } });
 }
 
-function table(slide, values, x, y, w, h, widths) {
-  const tab = slide.tables.add({ rows: values.length, columns: values[0].length,
+function node(s, words, x, y, w, h, size = 25, fill = '#FFFFFF', bold = false) {
+  const b = rect(s, x, y, w, h, fill, rule);
+  b.text = words;
+  b.text.style = { typeface: font, fontSize: size, color: black, bold,
+    alignment: 'center', verticalAlignment: 'middle', insets: 3 };
+  return b;
+}
+
+function connect(s, from, to, kind = 'straight') {
+  return s.shapes.connect(from, to, { kind, fromSide: 'right', toSide: 'left',
+    line: { fill: black, width: 1.7 }, tail: { type: 'triangle', width: 'sm', length: 'sm' } });
+}
+
+async function image(s, name, x, y, w, h, alt) {
+  const bytes = await fs.readFile(path.join(root, 'evidence', name));
+  s.images.add({ blob: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+    contentType: name.endsWith('.jpg') ? 'image/jpeg' : 'image/png', alt, fit: 'contain',
+    position: { left: x, top: y, width: w, height: h } });
+}
+
+function table(s, values, x, y, w, h, widths, size = 25) {
+  const t = s.tables.add({ rows: values.length, columns: values[0].length,
     left: x, top: y, width: w, height: h, values, columnWidths: widths });
-  tab.borders.assign({ style: 'solid', fill: '#D5DDDA', width: 0.7 });
+  t.borders.assign({ style: 'solid', fill: rule, width: .7 });
   for (let r = 0; r < values.length; r++) {
-    tab.rows[r].height = h / values.length;
+    t.rows[r].height = h / values.length;
     for (let c = 0; c < values[0].length; c++) {
-      const cell = tab.getCell(r, c);
-      cell.fill = r === 0 ? teal : (r % 2 ? '#FFFFFF' : '#EDF0EB');
-      cell.text.style = { typeface: font, fontSize: 24,
-        color: r === 0 ? '#FFFFFF' : ink, bold: r === 0 };
+      const cell = t.getCell(r, c);
+      cell.fill = r === 0 ? gray : '#FFFFFF';
+      cell.text.style = { typeface: font, fontSize: size, color: black, bold: r === 0,
+        verticalAlignment: 'middle', insets: { left: 10, right: 8, top: 3, bottom: 3 } };
     }
   }
-  return tab;
+  return t;
 }
 
-function slide(index) {
+function slide(i, source) {
   const s = deck.slides.add();
-  s.background.fill = paper;
-  if (index) text(s, notes[index].title, 64, 45, 1150, 80, 44, ink, true);
-  text(s, 'No Fix', 64, 674, 300, 24, 16, '#687678');
-  text(s, String(index + 1), 1160, 674, 65, 24, 16, '#687678');
-  s.speakerNotes.text = `${notes[index].time}\n\n${notes[index].speech}\n\n中文提示：${notes[index].zh}\n\nSources:\n${notes[index].sources.join('\n')}`;
+  s.background.fill = '#FFFFFF';
+  if (i) {
+    text(s, notes[i].title, 64, 45, 1150, 74, 43, true);
+    rect(s, 64, 126, 1150, 1.2, rule);
+  }
+  text(s, source, 66, 674, 1050, 25, 17);
+  text(s, `${i + 1} / 12`, 1115, 674, 100, 25, 17, false, 'right');
+  s.speakerNotes.text = `Speaker ${notes[i].speaker}, ${notes[i].time}, ${notes[i].seconds} seconds\n\nENGLISH\n${notes[i].speech}\n\n中文讲稿\n${notes[i].zh}\n\n翻页与指图提示\n${notes[i].cue_zh}\n\nQ&A backup, not part of the timed speech\n${notes[i].qa}\n\nSources\n${notes[i].sources.join('\n')}`;
   return s;
 }
 
-let s = slide(0);
-text(s, 'A simple game\nof Chess', 64, 170, 530, 175, 60, ink, true);
-text(s, 'No Fix', 68, 402, 430, 56, 36, red, true);
-text(s, 'CSAW 2026 Hack3D Final\nNovember 13, 2026', 68, 490, 470, 80, 27, '#465557');
-await image(s, 'source_assembly.jpg', 610, 145, 610, 440, 'Chess scene in the supplied problem statement');
+let s = slide(0, 'CSAW 2026 Hack3D Final, November 13, 2026');
+text(s, 'A simple game\nof Chess', 68, 183, 570, 180, 66, true);
+text(s, 'No Fix', 72, 406, 450, 56, 38, true);
+text(s, 'Recovering manufacturing information\nfrom a STEP chess assembly', 72, 495, 570, 100, 29);
+await image(s, 'source_assembly.jpg', 650, 160, 565, 445, 'The chess assembly pictured in the supplied statement');
 
-s = slide(1);
-table(s, [['File', 'Our starting point'], ['Chess Board.STEP', 'Geometry and hidden clues'],
-  ['Problem statement PDF', 'Task and submission requirements'], ['Pawn Files.zip', 'Encrypted CAD and drawing']],
-  64, 175, 1150, 280, [490, 660]);
-text(s, 'Our goal: recover the manufacturing information\nand explain how we found it.', 68, 500, 1100, 95, 32);
+s = slide(1, 'Source: final report, overview and Sections 1-8');
+text(s, 'Three inputs: Chess Board.STEP, problem statement, Pawn Files.zip', 68, 148, 1140, 44, 27);
+const origin = node(s, 'STEP\nassembly', 68, 338, 190, 95, 31, gray, true);
+const routes = [
+  ['Board QR\nModule sampling', 'AlF357 material sheet'],
+  ['Pawn positions\nSix-bit lookup', 'Knight G-code\nOriginal STEP via recovery note'],
+  ['Bottom grid\nBinary rows and cm ruler', 'Six target heights'],
+  ['Rook inscription\nCaesar shift and promotion clue', 'Pawn CAD and drawing'],
+  ['King inscription\nRead the internal file link', 'King G-code']
+];
+for (let i = 0; i < routes.length; i++) {
+  const y = 214 + i * 82;
+  const clue = node(s, routes[i][0], 350, y, 330, 65, 24);
+  const result = node(s, routes[i][1], 765, y, 445, 65, 25);
+  connect(s, origin, clue, 'elbow');
+  connect(s, clue, result);
+}
 
-s = slide(2);
-await image(s, 'solid_89_cut.png', 50, 140, 740, 500, 'Virtual views of the king exterior and clipped interior');
-text(s, '129 solid instances\n37 repeated pawns', 825, 190, 380, 110, 32, teal, true);
-text(s, 'We inspected internal faces.\n\nWe enlarged geometric text.\n\nWe recorded manual readings.', 825, 345, 370, 235, 27);
+s = slide(2, 'Source: final report, Section 1, pp. 2-3');
+await image(s, 'solid_89_cut.png', 55, 161, 755, 425, 'King exterior and internal cutaways from the supplied geometry');
+const steps = [['Text search', 'Part names, no plaintext answer'], ['Internal face views', 'Separate bodies and reveal inscriptions'],
+  ['Manual readings and scripts', 'Read text, then sample and decode']];
+for (let i = 0; i < steps.length; i++) {
+  text(s, steps[i][0], 840, 180 + i * 133, 370, 44, 29, true);
+  text(s, steps[i][1], 840, 229 + i * 133, 365, 65, 25);
+}
+text(s, '129 solid instances, including 37 placed Pawns', 80, 605, 1140, 43, 30, true);
 
-s = slide(3);
-await image(s, 'qr_restored.png', 70, 160, 440, 440, 'QR pattern reconstructed from the 25 by 25 module centers');
-text(s, '25 × 25 modules', 600, 175, 580, 65, 36, teal, true);
-text(s, 'Direct scanning failed.\n\nWe sampled the centers and filled the gaps.', 600, 275, 575, 160, 29);
-text(s, 'tinyurl.com/Hack3d26', 600, 465, 600, 55, 30, red, true);
-text(s, 'AlF357 material specification', 600, 550, 600, 55, 30);
+s = slide(3, 'Source: final report, Section 3, pp. 6-7; official EOS AlF357 sheet');
+text(s, 'Source geometry', 80, 150, 235, 40, 25, true);
+text(s, 'Restored QR', 367, 150, 235, 40, 25, true);
+await image(s, 'qr_geometry.png', 70, 204, 240, 240, 'Gapped physical QR faces before reconstruction');
+await image(s, 'qr_restored.png', 360, 204, 240, 240, 'Filled modules with a four-module white border');
+s.shapes.add({ geometry: 'rightArrow', position: { left: 318, top: 312, width: 35, height: 20 }, fill: black, line: { fill: 'none', width: 0 } });
+text(s, '25 × 25 module centers', 83, 468, 510, 43, 30, true);
+text(s, 'Direct scan failed. We filled the gaps\nand added a white border.', 83, 524, 515, 76, 26);
+text(s, 'AlF357', 663, 151, 540, 62, 48, true);
+text(s, 'A357 derivative, AlSi7Mg0.6', 665, 222, 545, 40, 28);
+text(s, 'tinyurl.com/Hack3d26', 665, 270, 545, 35, 25);
+table(s, [['EOS system', 'Layer', 'Volume rate'], ['M 290', '30 µm', '5.8 mm³/s'], ['M 400', '60 µm', '17 mm³/s']],
+  660, 331, 550, 149, [180, 170, 200], 24);
+text(s, 'Nitrogen, 20-90 µm powder\nPart density: 2.67 g/cm³', 665, 503, 545, 67, 24);
+text(s, 'Heat treatment: 540 ±6 C for 30 min, water quench, then 165 ±6 C for 6 h.', 70, 613, 1145, 28, 23);
+text(s, 'Start aging within 40 h. These are source specifications.', 70, 644, 1145, 25, 21);
 
-s = slide(4);
-await image(s, 'occupancy.png', 52, 135, 590, 520, 'Occupied and empty squares, with rank 8 first');
-text(s, 'Occupied = 1\nEmpty = 0', 720, 190, 470, 120, 36, teal, true);
-text(s, '37 occupied squares\n27 empty squares', 720, 350, 470, 105, 30);
-text(s, 'Rank 8 first\nFiles A through H', 720, 520, 470, 95, 30);
+s = slide(4, 'Source: final report, Section 2, pp. 4-5; occupancy computed from placed Pawn centers');
+const gridValues = [['', ...'ABCDEFGH'], ...data.occupancy.map((row, i) => [String(8-i), ...row.map(String)])];
+const grid = table(s, gridValues, 70, 170, 468, 468, Array(9).fill(52), 26);
+grid.borders.assign({ style: 'solid', fill: '#FFFFFF', width: 1.3 });
+for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+  const cell = grid.getCell(r, c);
+  cell.fill = r === 0 || c === 0 ? '#FFFFFF' : (data.occupancy[r-1][c-1] ? paleRed : '#EFEDE7');
+  cell.text.style = { typeface: font, fontSize: 26, color: black, bold: r === 0 || c === 0,
+    alignment: 'center', verticalAlignment: 'middle', insets: 0 };
+}
+text(s, 'Occupied = 1, empty = 0', 628, 177, 580, 55, 35, true);
+text(s, 'Rank 8 first\nA through H in each row', 628, 273, 575, 105, 33);
+text(s, '37 occupied squares\n27 empty squares', 628, 414, 575, 85, 30);
+text(s, 'Wrong row order gave YPu63d0kpx.\nThe engraved labels corrected our direction.', 628, 550, 580, 85, 25);
 
-s = slide(5);
-table(s, [['Six bits', 'Index', 'Letter'], ['000111', '7', 'H'], ['011010', '26', 'a'],
-  ['011100', '28', 'c'], ['100100', '36', 'k']], 64, 190, 410, 300, [175, 115, 120]);
-text(s, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789-_',
-  540, 155, 670, 145, 28, teal, false, 'Courier New');
-text(s, 'Hack3d26-2', 540, 345, 670, 85, 52, red, true);
-text(s, 'tinyurl.com/Hack3d26-2', 540, 445, 670, 60, 29);
-text(s, '60 message bits\n4 trailing zero bits', 540, 550, 670, 90, 28);
+s = slide(5, 'Source: final report, Section 2, pp. 4-5; engraved alphabet and occupancy decode');
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const chars = data.six_bit_groups.map(bits => alphabet[parseInt(bits, 2)]);
+table(s, [['Six bits', 'Index', 'Character'], ...data.six_bit_groups.map((bits,i) => [bits, String(parseInt(bits,2)), chars[i]])],
+  67, 151, 480, 474, [195, 135, 150], 25);
+text(s, 'The engraved alphabet has 64 characters', 610, 165, 600, 52, 28, true);
+text(s, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789-_', 610, 232, 595, 112, 27);
+text(s, '000111 = 7, selecting H at index 7', 610, 367, 600, 46, 27);
+text(s, 'Hack3d26-2', 610, 434, 600, 72, 52, true);
+text(s, 'tinyurl.com/Hack3d26-2', 610, 517, 600, 42, 29);
+text(s, '60 bits decoded. Four remaining zeros recorded.\nThe destination opened the Knight G-code.', 610, 584, 600, 65, 25);
 
-s = slide(6);
-table(s, [['Piece', 'Binary row', 'Height (cm)'], ['King', '00001001', '9'],
-  ['Queen', '00001000', '8'], ['Rook', '00000101', '5'], ['Bishop', '00000111', '7'],
-  ['Knight', '00000110', '6'], ['Pawn', '00000101', '5']], 64, 165, 680, 385, [210, 260, 210]);
-await image(s, 'height_geometry.png', 790, 160, 420, 290, 'Actual underside depth pattern and row labels');
-text(s, 'The ruler gives cm.\n\nThe size note identifies\nthe CAD as prototype parts.', 800, 470, 400, 150, 27);
+s = slide(6, 'Source: final report, Section 4, pp. 8-9');
+text(s, 'Shallow = 1, deep = 0', 68, 151, 650, 44, 30, true);
+table(s, [['Piece', 'Binary row', 'cm', 'mm'], ...data.heights.map(h => [h.piece, h.binary, String(h.height_cm), String(h.height_mm)])],
+  66, 216, 652, 350, [182, 230, 110, 130], 25);
+await image(s, 'height_geometry.png', 765, 173, 445, 305, 'The six labeled shallow/deep source rows');
+text(s, 'Ruler unit: cm', 775, 485, 435, 33, 26, true);
+await image(s, 'cm_ruler.png', 772, 522, 435, 35, 'The source ruler supplies centimeters');
+text(s, 'King: 8 + 1 = 9 cm = 90 mm', 68, 591, 660, 48, 30, true);
+text(s, 'The prototype note keeps target heights\nseparate from the current CAD size.', 770, 575, 440, 74, 26);
 
-s = slide(7);
-await image(s, 'rook_cipher.png', 64, 145, 1150, 95, 'Geometric ciphertext from inside the rook');
-table(s, [['Shift -3', 'Result'], ['Zkdw', 'What']], 64, 300, 390, 125, [195, 195]);
-text(s, 'What is the best piece for a pawn\nto turn in to?', 525, 295, 680, 110, 31);
-text(s, 'Queen', 525, 450, 650, 85, 60, red, true);
-text(s, 'Both archive members passed their CRC checks.', 68, 590, 1110, 65, 29);
+s = slide(7, 'Source: final report, Section 5, p. 10; the supplied encrypted Pawn ZIP');
+await image(s, 'rook_cipher.png', 70, 157, 1134, 83, 'The source ciphertext from inside the rook');
+const before = node(s, 'Zkdw', 76, 291, 220, 76, 37);
+const after = node(s, 'What', 448, 291, 220, 76, 37);
+connect(s, before, after);
+text(s, 'Shift -3', 316, 250, 120, 40, 26, true, 'center');
+text(s, 'What is the best piece for a pawn\nto turn in to?', 75, 415, 690, 104, 34);
+text(s, 'Queen', 833, 306, 355, 90, 62, true);
+text(s, 'Case-sensitive password', 839, 413, 356, 42, 25);
+text(s, 'Earlier guesses failed. The rook clue supplied the answer.', 78, 566, 1120, 45, 27);
+text(s, 'Both archive members extracted and passed CRC checks.', 78, 617, 1120, 39, 30, true);
 
-s = slide(8);
-text(s, '31 solid instances\n21 part labels', 64, 155, 620, 100, 35, teal, true);
-table(s, [['Hardware label', 'Qty'], ['N52 magnets 1/4 × 3/16 in', '2'],
-  ['Springs 0.3 × 3 × 5 mm', '2'], ['Spring 0.6 × 8 × 50 mm', '1'],
-  ['Pins 1.5 × 6 mm', '5'], ['Pins 1.5 × 18 mm', '2']],
-  64, 300, 620, 300, [525, 95]);
-await image(s, 'pawn_exploded-1.png', 735, 130, 470, 510, 'Recovered Queen-Pawn exploded drawing, credited to Works by Design');
+s = slide(8, 'Source: final report, Section 6, pp. 11-12; recovered drawing credited to Works by Design');
+text(s, '31 solid instances', 70, 151, 650, 65, 42, true);
+text(s, '21 labels with repeated quantities', 72, 227, 665, 43, 30);
+table(s, [['Additional hardware', 'Qty'], ['N52 magnets, 1/4 × 3/16 inch', '2'], ['Springs, 0.3 × 3 × 5 mm', '2'],
+  ['Spring, 0.6 × 8 × 50 mm', '1'], ['Pins, 1.5 × 6 mm', '5'], ['Pins, 1.5 × 18 mm', '2']],
+  70, 314, 660, 283, [555, 105], 25);
+text(s, 'Body count: 2 + 2 + 5 + 5 + 17 = 31', 73, 616, 660, 40, 27, true);
+await image(s, 'pawn_exploded-1.png', 790, 143, 405, 506, 'The original Queen-Pawn exploded assembly drawing');
 
-s = slide(9);
-await image(s, 'king_toolpath.png', 50, 130, 575, 520, 'King outer-wall extrusion toolpath reconstructed from G-code');
-text(s, 'PI3MK2_King.gcode', 670, 150, 540, 60, 34, teal, true);
-table(s, [['Setting', 'Value'], ['Nominal layer', '0.2 mm'], ['Extruder', '215 C'], ['Bed', '80 C']],
-  670, 250, 540, 205, [310, 230]);
-text(s, '336 marked layers\n337 declared in the header', 670, 490, 540, 85, 28);
-text(s, 'The inscription mentions metal.\nThe file contains filament commands.', 670, 590, 540, 65, 24);
+s = slide(9, 'Source: final report, Section 7, pp. 13-14; PI3MK2_King.gcode');
+await image(s, 'king_id.png', 69, 150, 455, 65, 'Enlarged lettering used to correct an ambiguous Drive ID');
+await image(s, 'king_toolpath.png', 60, 228, 477, 375, 'King outer-wall extrusion paths reconstructed from commands');
+text(s, 'The enlarged ID corrected our first 404.', 70, 619, 490, 33, 24);
+table(s, [['Command check', 'Observed result'], ['Layer sections', '336, header 337'], ['Maximum motion Z', '67.15 mm, matches header'],
+  ['Heater-off commands', 'Present']], 586, 159, 625, 244, [280, 345], 25);
+text(s, '0.2 mm layers, 215 C extruder, 80 C bed\n10% infill, tree supports, brim', 593, 438, 615, 86, 27);
+rect(s, 588, 554, 621, 95, gray);
+text(s, 'Inscription: metal production\nLinked file: filament extrusion commands', 604, 563, 590, 76, 28, true);
 
-s = slide(10);
-await image(s, 'knight_cad.png', 45, 160, 470, 440, 'Recovered original Knight STEP assembly');
-table(s, [['Check', 'King', 'Knight'], ['Header layers', '337', '177'],
-  ['Marked sections', '336', '78'], ['Highest motion Z', '67.15 mm', '15.75 mm'],
-  ['Heater-off ending', 'Present', 'Missing']], 535, 175, 680, 290, [285, 195, 200]);
-text(s, 'The file ending supplies an original-model link.', 535, 510, 680, 75, 28);
-text(s, 'Recovered STEP: 61 solid instances', 535, 600, 680, 55, 30, red, true);
+s = slide(10, 'Source: final report, Section 8, pp. 15-16; original model link inside Knight G-code');
+table(s, [['Knight check', 'Header', 'Observed'], ['Layer sections', '177', '78'], ['Maximum Z', '34.95 mm', '15.75 mm']],
+  67, 165, 590, 199, [260, 165, 165], 25);
+text(s, 'No heater-off commands.\nAn ending comment did not restore missing paths.', 72, 386, 585, 85, 27);
+const recovery = node(s, 'Recovery note\n“If Corrupted please refer\nto original model”', 74, 505, 548, 119, 28, gray);
+const model = node(s, 'Original Knight STEP', 811, 587, 390, 52, 28);
+connect(s, recovery, model, 'elbow');
+await image(s, 'knight_cad.png', 758, 158, 455, 386, 'The recovered original Knight assembly');
+text(s, '61 solid instances', 806, 531, 400, 46, 33, true);
 
-s = slide(11);
-table(s, [['Clue', 'Recovered result', 'Check'], ['Board QR', 'AlF357 specification', 'Valid redirect'],
-  ['Bottom diagram', 'Six target heights', 'Rows and cm ruler'], ['Pawn positions', 'Knight G-code', '60-bit message'],
-  ['Rook cipher', 'Pawn CAD and drawing', 'Queen opens ZIP'], ['King inscription', 'King G-code', 'Commands inspected'],
-  ['Knight file ending', 'Original Knight STEP', '61 solid instances']],
-  64, 155, 1150, 360, [340, 460, 350]);
-text(s, 'Original files, analysis code, report, and evidence are included.', 68, 565, 1130, 65, 31);
-text(s, 'Physical manufacturing and fit remain untested.', 68, 635, 1130, 35, 24, '#465557');
+s = slide(11, 'Source: final report, Section 9, pp. 17-18; decoded results and file checks');
+table(s, [['Clue', 'Recovered information', 'Verification'], ['Board QR', 'AlF357 specification', 'Restored QR and destination'],
+  ['Bottom grid', 'Six target heights', 'Labeled rows and cm ruler'], ['Pawn positions', 'Knight G-code', 'Six-bit decode and destination'],
+  ['Rook inscription', 'Pawn CAD and drawing', 'Queen opens both ZIP members'], ['King inscription', 'King G-code', 'Header and command checks'],
+  ['Knight recovery note', 'Original Knight STEP', '61 imported solid instances']],
+  65, 157, 1148, 350, [290, 405, 453], 25);
+text(s, 'We verified file hashes, decodes, archive contents, and CAD imports.', 72, 540, 1136, 46, 29, true);
+text(s, 'Open points: four unused bits, the King count mismatch, and the metal wording.', 73, 596, 1136, 35, 24);
+text(s, 'Physical printing, fit, and motion remain untested.', 73, 633, 1136, 31, 25);
 
 for (const [i, item] of deck.slides.items.entries()) {
   const png = await deck.export({ slide: item, format: 'png', scale: 1 });
@@ -149,22 +226,19 @@ for (const [i, item] of deck.slides.items.entries()) {
 }
 const candidate = path.join(build, 'candidate.pptx');
 await (await PresentationFile.exportPptx(deck)).save(candidate);
-
 const skillDir = process.env.PRESENTATIONS_SKILL_DIR;
-const runtimePython = process.env.ARTIFACT_PYTHON;
-if (!skillDir || !runtimePython) throw new Error('Set PRESENTATIONS_SKILL_DIR and ARTIFACT_PYTHON to the bundled runtime paths.');
+const python = process.env.ARTIFACT_PYTHON;
+if (!skillDir || !python) throw new Error('Set PRESENTATIONS_SKILL_DIR and ARTIFACT_PYTHON.');
 const { finalizePresentation } = await import(pathToFileURL(path.join(skillDir, 'container_tools/artifact_tool_utils.mjs')).href);
-const finalPath = path.join(output, process.argv[2] ?? 'No_Fix_10_Minute_Presentation.pptx');
-const result = await finalizePresentation({ workspaceDir: root, candidatePath: candidate, finalPath,
-  pythonExecutable: runtimePython,
+const finalPath = path.join(output, filename);
+const owners = [4, 5, 6, 7, 9, 10, 11, 12];
+const receipt = await finalizePresentation({ workspaceDir: root, candidatePath: candidate, finalPath,
+  pythonExecutable: python,
   integrityValidatorPath: path.join(skillDir, 'container_tools/inspect_presentation_package_integrity.py'),
   layoutValidatorPath: path.join(skillDir, 'container_tools/inspect_presentation_layout_geometry.py'),
   layoutArgs: ['--expected-slide-size-emu', '12192000,6858000', '--validate-heading-fit',
-    ...[2, 6, 7, 8, 9, 10, 11, 12].flatMap(number => ['--require-native-table-slide', String(number)])],
-  explicitTotalSlideCount: 12,
-  requiredNativeTableOwnerSlides: [2, 6, 7, 8, 9, 10, 11, 12],
-  requiredNativeChartOwnerSlides: [],
-  fontPolicy: { basis: 'design', families: ['Arial', 'Courier New'] },
-  verifyArtifactToolImport: true,
-  receiptPath: path.join(build, 'presentation.validation.json') });
-console.log(JSON.stringify(result));
+    ...owners.flatMap(n => ['--require-native-table-slide', String(n)])],
+  explicitTotalSlideCount: 12, requiredNativeTableOwnerSlides: owners, requiredNativeChartOwnerSlides: [],
+  fontPolicy: { basis: 'design', families: [font] }, verifyArtifactToolImport: true,
+  receiptPath: path.join(build, path.basename(finalPath) + '.validation.json') });
+console.log(JSON.stringify(receipt));

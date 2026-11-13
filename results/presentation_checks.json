@@ -1,0 +1,85 @@
+{
+  "team": "No Fix",
+  "report_sha256": "5d8818a61a7e37c69f6eb107856581f78e054dbbd0acd8425450d47d2e8316e4",
+  "pptx": "presentation/output/No_Fix_7_Minute_Final.pptx",
+  "pptx_sha256": "e871115b8e70081c1a2b87b7b3e8cef2b837a36e54eecff1e5ab5f54dcbd9e28",
+  "pdf": "presentation/output/No_Fix_7_Minute_Final.pdf",
+  "pdf_sha256": "3bbd3fd5cb15aab0c29165e0ff47952b858ddb485c1796bd38395b74d55db513",
+  "slide_count": 12,
+  "duration_seconds": 420,
+  "speakers": [
+    {
+      "speaker": "A",
+      "slides": [
+        1,
+        2,
+        3
+      ],
+      "seconds": 105,
+      "english_words": 155
+    },
+    {
+      "speaker": "B",
+      "slides": [
+        4,
+        5,
+        6
+      ],
+      "seconds": 105,
+      "english_words": 161
+    },
+    {
+      "speaker": "C",
+      "slides": [
+        7,
+        8,
+        9
+      ],
+      "seconds": 105,
+      "english_words": 158
+    },
+    {
+      "speaker": "D",
+      "slides": [
+        10,
+        11,
+        12
+      ],
+      "seconds": 105,
+      "english_words": 152
+    }
+  ],
+  "native_table_owner_slides": [
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11,
+    12
+  ],
+  "font_families": [
+    "Times New Roman"
+  ],
+  "text_colors": [
+    "000000"
+  ],
+  "all_slides_visually_reviewed": true,
+  "notes_languages": [
+    "English",
+    "Chinese"
+  ],
+  "notes_match_script_source": true,
+  "source_data_checked": [
+    "occupancy grid",
+    "six-bit lookup",
+    "final heights",
+    "Pawn hardware",
+    "King and Knight G-code checks"
+  ],
+  "pdf_export_application": "LibreOffice",
+  "native_powerpoint_application_tested": false,
+  "layout_findings": 0,
+  "layout_warnings": 0
+}

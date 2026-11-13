@@ -15,9 +15,9 @@ The report text and our chart labels use Times New Roman in black. The PDF embed
 | Code Upload | [No_Fix_Code.zip](submission/No_Fix_Code.zip) |
 | Any additional supporting files | [No_Fix_Supporting.zip](submission/No_Fix_Supporting.zip) |
 
-The [PowerPoint](presentation/output/No_Fix_10_Minute_Presentation.pptx) has 12 slides, English speaker notes, and a 10-minute timing plan. [Chinese rehearsal notes](presentation/REHEARSAL_ZH.md) include a short explanation for each slide and practice questions. The overall [No Fix.zip](submission/No%20Fix.zip) also follows the single-ZIP wording in the problem statement. See the [upload guide](SUBMISSION_GUIDE_ZH.md) before using the form.
+The [final PowerPoint](presentation/output/No_Fix_7_Minute_Final.pptx) has 12 slides with editable tables and diagrams. It follows the final report and includes a complete English and Chinese script plus Q&A details in each slide's speaker notes. The [PDF backup](presentation/output/No_Fix_7_Minute_Final.pdf) uses the same slide order. The [bilingual speaker scripts](presentation/SPEAKER_SCRIPTS_EN_ZH.md) and [rehearsal guide](presentation/REHEARSAL_ZH.md) match this version. The overall [No Fix.zip](submission/No%20Fix.zip) also follows the single-ZIP wording in the problem statement. See the [upload guide](SUBMISSION_GUIDE_ZH.md) before using the form.
 
-The final presentation allowance is seven minutes speaking plus three minutes of questions. The four-speaker scripts supplied in chat use that allowance. The PPTX and its original ten-minute notes remain unchanged.
+The presentation lasts seven minutes, followed by three minutes of questions. Speakers A, B, C, and D each have 105 seconds and three consecutive slides. English and Chinese are alternative versions of the same timed speech. The slides use Times New Roman and black text.
 
 ## Results
 

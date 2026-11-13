@@ -40,7 +40,12 @@ def check():
     for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
         assert required in report_text, required
     assert pdf.read_bytes() == (ROOT / "output/pdf/No_Fix_Team_Report.pdf").read_bytes()
-    pptx = ROOT / "presentation/output/No_Fix_10_Minute_Presentation.pptx"
+    timings = json.loads((ROOT / "presentation/notes.json").read_text())
+    assert len(timings) == 12 and sum(n["seconds"] for n in timings) == 420
+    for speaker in "ABCD":
+        group = [n for n in timings if n["speaker"] == speaker]
+        assert len(group) == 3 and sum(n["seconds"] for n in group) == 105
+    pptx = ROOT / "presentation/output/No_Fix_7_Minute_Final.pptx"
     with zipfile.ZipFile(pptx) as z:
         assert z.testzip() is None
         slides = [n for n in z.namelist() if re.fullmatch(r"ppt/slides/slide\d+.xml", n)]
@@ -48,9 +53,16 @@ def check():
         assert len(slides) == len(notes) == 12
         ns = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
         assert sum(len(ET.fromstring(z.read(n)).findall(".//a:tbl", ns)) for n in slides) == 8
-    timings = json.loads((ROOT / "presentation/notes.json").read_text())
-    assert len(timings) == 12 and sum(n["seconds"] for n in timings) == 600
-    assert len(PdfReader(ROOT / "presentation/output/No_Fix_10_Minute_Presentation.pdf").pages) == 12
+        for i, item in enumerate(timings, 1):
+            slide = ET.fromstring(z.read(f"ppt/slides/slide{i}.xml"))
+            fonts = {f.attrib["typeface"] for f in slide.findall(".//a:latin", ns)}
+            assert fonts == {"Times New Roman"}, (i, fonts)
+            note = ET.fromstring(z.read(f"ppt/notesSlides/notesSlide{i}.xml"))
+            note_text = "".join(t.text or "" for t in note.findall(".//a:t", ns))
+            clean = lambda text: re.sub(r"\s+", "", text)
+            assert clean(item["speech"]) in clean(note_text), i
+            assert clean(item["zh"]) in clean(note_text), i
+    assert len(PdfReader(ROOT / "presentation/output/No_Fix_7_Minute_Final.pdf").pages) == 12
 
     manifest = json.loads((ROOT / "submission/manifest.json").read_text())
     for row in manifest["files"]:
@@ -66,12 +78,12 @@ def check():
             if name.startswith("recovered/"):
                 assert hashlib.sha256(z.read(name)).hexdigest() == digest
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
-        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json"]:
+        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json", "presentation/notes.json", "presentation/SPEAKER_SCRIPTS_EN_ZH.md"]:
             assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
     with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
-        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip"]:
+        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip", "presentation/output/No_Fix_7_Minute_Final.pptx", "presentation/output/No_Fix_7_Minute_Final.pdf", "presentation/SPEAKER_SCRIPTS_EN_ZH.md"]:
             assert z.read(name) == (ROOT / name).read_bytes(), name
-    print("PASS: source hashes, decodes, current ZIP contents, 18 report pages/9 sections, 12 slides/notes, upload limits")
+    print("PASS: sources, current packages, 18 report pages, 12 slides with bilingual notes, 420 seconds, four 105-second speakers, upload limits")
 
 
 if __name__ == "__main__":
