@@ -40,32 +40,12 @@ def check():
     for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
         assert required in report_text, required
     assert pdf.read_bytes() == (ROOT / "output/pdf/No_Fix_Team_Report.pdf").read_bytes()
-    timings = json.loads((ROOT / "presentation/notes_natural.json").read_text())
-    assert len(timings) == 12 and sum(n["seconds"] for n in timings) == 420
-    for speaker in "ABCD":
-        group = [n for n in timings if n["speaker"] == speaker]
-        assert len(group) == 3 and sum(n["seconds"] for n in group) == 105
-    assert timings[4]["speech"].startswith("Following the board instructions,")
-    pptx = ROOT / "presentation/output/No_Fix_7_Minute_Natural_Notes.pptx"
+    pptx = ROOT / "presentation/output/No_Fix_presentation.pptx"
     with zipfile.ZipFile(pptx) as z:
         assert z.testzip() is None
         slides = [n for n in z.namelist() if re.fullmatch(r"ppt/slides/slide\d+.xml", n)]
-        notes = [n for n in z.namelist() if re.fullmatch(r"ppt/notesSlides/notesSlide\d+.xml", n)]
-        assert len(slides) == len(notes) == 12
-        ns = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
-        assert sum(len(ET.fromstring(z.read(n)).findall(".//a:tbl", ns)) for n in slides) == 8
-        for i, item in enumerate(timings, 1):
-            slide = ET.fromstring(z.read(f"ppt/slides/slide{i}.xml"))
-            fonts = {f.attrib["typeface"] for f in slide.findall(".//a:latin", ns)}
-            assert fonts == {"Times New Roman"}, (i, fonts)
-            note = ET.fromstring(z.read(f"ppt/notesSlides/notesSlide{i}.xml"))
-            note_text = "".join(t.text or "" for t in note.findall(".//a:t", ns))
-            clean = lambda text: re.sub(r"\s+", "", text)
-            assert clean(item["speech"]) in clean(note_text), i
-            assert clean(item["zh"]) in clean(note_text), i
-            assert clean(item["logic_zh"]) in clean(note_text), i
-            assert clean(item["qa"]) in clean(note_text), i
-    assert len(PdfReader(ROOT / "presentation/output/No_Fix_7_Minute_Natural_Notes.pdf").pages) == 12
+        assert len(slides) == 12
+    assert len(PdfReader(ROOT / "presentation/output/No_Fix_presentation.pdf").pages) == 12
 
     manifest = json.loads((ROOT / "submission/manifest.json").read_text())
     for row in manifest["files"]:
@@ -75,18 +55,42 @@ def check():
         if path.suffix == ".zip":
             with zipfile.ZipFile(path) as z:
                 assert z.testzip() is None
+                assert len(z.namelist()) == len(set(z.namelist()))
                 assert not any(n.startswith("/") or ".." in Path(n).parts for n in z.namelist())
+    excluded = {"presentation_checks.json", "report_typography.json"}
+    presentations = ["presentation/output/No_Fix_presentation.pdf",
+                     "presentation/output/No_Fix_presentation.pptx"]
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Supporting.zip") as z:
         for name, digest in hashes.items():
-            if name.startswith("recovered/"):
+            if name.startswith("recovered/") and not name.endswith(".gcode"):
                 assert hashlib.sha256(z.read(name)).hexdigest() == digest
-    with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
-        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json", "presentation/notes_natural.json", "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md"]:
-            assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
-    with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
-        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip", "presentation/output/No_Fix_7_Minute_Natural_Notes.pptx", "presentation/output/No_Fix_7_Minute_Natural_Notes.pdf", "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md"]:
+        for name in presentations:
             assert z.read(name) == (ROOT / name).read_bytes(), name
-    print("PASS: sources, current packages, 18 report pages, 12 slides with bilingual notes, 420 seconds, four 105-second speakers, upload limits")
+        assert not any(Path(n).name in excluded for n in z.namelist())
+    with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
+        for name, digest in hashes.items():
+            assert hashlib.sha256(z.read("NoFix/" + name)).hexdigest() == digest, name
+        for name in ["docs/report.md", "docs/CODE_README.md", "docs/SUPPORTING_README.md",
+                     "src/build_report.py", "src/package_submission.py", "src/verify_delivery.py",
+                     "results/final_review_checks.json"]:
+            assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
+        assert z.read("NoFix/README.md") == (ROOT / "docs/CODE_README.md").read_bytes()
+        chinese = re.compile(r"[\u3400-\u9fff\uf900-\ufaff]")
+        for name in z.namelist():
+            assert not chinese.search(name), name
+            assert not name.startswith("NoFix/presentation/"), name
+            assert Path(name).name not in excluded, name
+            assert not any(tag in name.upper() for tag in ["_ZH", "REHEARSAL", "SPEAKER_SCRIPTS", "SUBMISSION_GUIDE"]), name
+            if Path(name).suffix in {".py", ".json", ".md", ".csv", ".txt"}:
+                assert not chinese.search(z.read(name).decode("utf-8")), name
+    with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
+        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip",
+                     "submission/No_Fix_Supporting.zip"] + presentations:
+            assert z.read(name) == (ROOT / name).read_bytes(), name
+        assert not any(tag in name.upper() for name in z.namelist()
+                       for tag in ["_ZH", "REHEARSAL", "SPEAKER_SCRIPTS", "SUBMISSION_GUIDE"])
+    print("PASS: sources, 18 report pages, 12 presentation pages, English-only code upload, "
+          "PDF and PPTX in supporting ZIP, all five recovered files in code ZIP, hashes, CRCs and upload limits")
 
 
 if __name__ == "__main__":
