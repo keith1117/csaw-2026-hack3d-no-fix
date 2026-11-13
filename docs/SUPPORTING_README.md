@@ -1,7 +1,6 @@
 # No Fix supporting files
 
 - `presentation/output/No_Fix_presentation.pdf`: the 12-slide presentation as a PDF.
-- `presentation/output/No_Fix_presentation.pptx`: the native PowerPoint presentation required by the problem statement.
 - `recovered/`: the Pawn STEP, Queen-Pawn assembly drawing, and original Knight STEP.
 - `results/`: decoded information, source references, hashes, and analysis checks.
 - `evidence/`: selected source views supporting the report.

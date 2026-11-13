@@ -14,8 +14,7 @@ RESULTS = ["decoded.json", "final_heights.csv", "pawn_hardware.csv",
            "gcode_checks.json", "recovered_cad_checks.json", "final_review_checks.json"]
 SCRIPTS = ["analyze.py", "check_gcode.py", "preview_cad.py", "build_report.py",
            "package_submission.py", "verify_delivery.py"]
-PRESENTATIONS = ["presentation/output/No_Fix_presentation.pdf",
-                 "presentation/output/No_Fix_presentation.pptx"]
+PRESENTATIONS = ["presentation/output/No_Fix_presentation.pdf"]
 EVIDENCE = ["alphabet.png", "board_instruction.png", "rank_labels_geometry.png",
             "qr_geometry.png", "qr_restored.png", "occupancy.png", "height_geometry.png",
             "prototype_note.png", "cm_ruler.png", "rook_cipher.png", "king_inscription.png",
@@ -39,7 +38,7 @@ def main():
     recovered = [str(p.relative_to(ROOT)) for p in (ROOT / "recovered").glob("*") if p.is_file()]
     evidence = ["evidence/" + name for name in EVIDENCE]
 
-    # Keep G-code in the code ZIP to leave room for both presentation formats.
+    # Keep G-code in the code ZIP to leave room for the presentation PDF.
     large_previews = {"knight_toolpath.png", "pawn_exploded-1.png", "king_toolpath.png",
                       "solid_89_cut.png", "knight_cad.png", "pawn_cad.png", "source_assembly.jpg"}
     support_files = results + PRESENTATIONS
@@ -60,8 +59,7 @@ def main():
              "submission/No_Fix_Supporting.zip"] + PRESENTATIONS
     overall_readme = "# No Fix submission\n\n"
     overall_readme += "The submission folder contains the report PDF, code ZIP, and supporting ZIP.\n\n"
-    overall_readme += "The presentation folder contains the PDF and native PowerPoint. "
-    overall_readme += "Both are also included in the supporting ZIP. "
+    overall_readme += "The presentation folder contains the PDF, also included in the supporting ZIP. "
     overall_readme += "All five recovered manufacturing files are in the code ZIP.\n"
     archive(OUT / "No Fix.zip", files, readme=overall_readme)
 

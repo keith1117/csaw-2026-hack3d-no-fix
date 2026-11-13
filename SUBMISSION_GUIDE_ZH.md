@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | Team Report | `submission/No_Fix_Team_Report.pdf` | 2026 年 11 月 13 日重写的最终版英文第一人称报告，共 18 页、9 个章节 |
 | Code Upload | `submission/No_Fix_Code.zip` | Python 分析代码、原始输入、全部五份恢复文件（含两份 G-code）、结果及英文复现说明 |
-| Any additional supporting files | `submission/No_Fix_Supporting.zip` | 演讲 PDF 和 PPTX、恢复的 CAD、Pawn 原始装配 PDF 和关键证据 |
+| Any additional supporting files | `submission/No_Fix_Supporting.zip` | 演讲 PDF、恢复的 CAD、Pawn 原始装配 PDF 和关键证据 |
 
 报告和代码包分别低于 100 MB，supporting 包低于 10 MB。确切字节数及 SHA-256 见 `submission/manifest.json`。
 
@@ -20,11 +20,11 @@
 
 每页 speaker notes 均包含对应的英文稿、中文稿、承接逻辑、指图提示和问答资料。完整分人讲稿见 `presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md`，排练说明见 `presentation/REHEARSAL_ZH.md`。承接逻辑和问答资料供排练与备答使用，不计入朗读。A 负责第 1-3 页，B 第 4-6 页，C 第 7-9 页，D 第 10-12 页；在 1:45、3:30、5:15 交接，7:00 结束。中英文现场选择一种语言。
 
-题目说明要求在 **2026 年 11 月 13 日上午 8 点前**提交 PowerPoint，并在 11 月 13 日展示。PDF 未另外说明时区，请按比赛方通知确认。演讲 PDF 和原生 PPTX 均已加入 supporting 包；如果表单另有演讲文件栏，也可单独上传同名 PPTX。为满足 supporting 包的 10 MB 限制，两份原始 G-code 完整保留在代码包中。
+本次提交仅包含演讲 PDF，已加入 supporting 包；原生 PPTX 保留本地用于演讲。两份原始 G-code 完整保留在代码包中。
 
 ## 题目所说的单一 ZIP
 
-题目 PDF 还写了团队名 ZIP 的要求。`submission/No Fix.zip` 是总包，包含报告、代码包、supporting 包、PPTX 和幻灯片 PDF；内附英文 README。它用于比赛方要求一个总 ZIP 的情况。截图中的三个独立栏优先按上表分别上传。
+题目 PDF 还写了团队名 ZIP 的要求。`submission/No Fix.zip` 是总包，包含报告、代码包、supporting 包和幻灯片 PDF；内附英文 README。它用于比赛方要求一个总 ZIP 的情况。截图中的三个独立栏优先按上表分别上传。
 
 ## 提交内容中的实际限制
 

@@ -422,4 +422,4 @@ We obtained the distribution from the supplied local files. The [official EOS sh
 
 ### 9.5 Submission contents
 
-We provide this PDF for Team Report, `No_Fix_Code.zip` for Code Upload, and `No_Fix_Supporting.zip` for supporting files. The code ZIP contains all five recovered files, inputs, scripts, evidence, and results. The supporting ZIP contains the presentation PDF and PowerPoint, recovered CAD and drawing, and selected evidence. Limits are 100 MB for report/code and 10 MB for supporting files; `submission/manifest.json` records sizes and hashes. We also provide `No Fix.zip` and a [public repository](https://github.com/keith1117/csaw-2026-hack3d-no-fix).
+We provide this PDF for Team Report, `No_Fix_Code.zip` for Code Upload, and `No_Fix_Supporting.zip` for supporting files. The code ZIP contains all five recovered files, inputs, scripts, evidence, and results. The supporting ZIP contains the presentation PDF, recovered CAD and drawing, and selected evidence. Limits are 100 MB for report/code and 10 MB for supporting files; `submission/manifest.json` records sizes and hashes. We also provide `No Fix.zip`.

@@ -6,7 +6,6 @@ import hashlib
 import json
 import re
 import zipfile
-import xml.etree.ElementTree as ET
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,12 +39,10 @@ def check():
     for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
         assert required in report_text, required
     assert pdf.read_bytes() == (ROOT / "output/pdf/No_Fix_Team_Report.pdf").read_bytes()
-    pptx = ROOT / "presentation/output/No_Fix_presentation.pptx"
-    with zipfile.ZipFile(pptx) as z:
-        assert z.testzip() is None
-        slides = [n for n in z.namelist() if re.fullmatch(r"ppt/slides/slide\d+.xml", n)]
-        assert len(slides) == 12
     assert len(PdfReader(ROOT / "presentation/output/No_Fix_presentation.pdf").pages) == 12
+    submission_text = report_text.split("9.5 Submission contents", 1)[1]
+    assert "and PowerPoint" not in submission_text
+    assert "public repository" not in submission_text
 
     manifest = json.loads((ROOT / "submission/manifest.json").read_text())
     for row in manifest["files"]:
@@ -58,8 +55,7 @@ def check():
                 assert len(z.namelist()) == len(set(z.namelist()))
                 assert not any(n.startswith("/") or ".." in Path(n).parts for n in z.namelist())
     excluded = {"presentation_checks.json", "report_typography.json"}
-    presentations = ["presentation/output/No_Fix_presentation.pdf",
-                     "presentation/output/No_Fix_presentation.pptx"]
+    presentations = ["presentation/output/No_Fix_presentation.pdf"]
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Supporting.zip") as z:
         for name, digest in hashes.items():
             if name.startswith("recovered/") and not name.endswith(".gcode"):
@@ -67,6 +63,7 @@ def check():
         for name in presentations:
             assert z.read(name) == (ROOT / name).read_bytes(), name
         assert not any(Path(n).name in excluded for n in z.namelist())
+        assert not any(n.lower().endswith((".pptx", ".ppt")) for n in z.namelist())
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
         for name, digest in hashes.items():
             assert hashlib.sha256(z.read("NoFix/" + name)).hexdigest() == digest, name
@@ -89,8 +86,9 @@ def check():
             assert z.read(name) == (ROOT / name).read_bytes(), name
         assert not any(tag in name.upper() for name in z.namelist()
                        for tag in ["_ZH", "REHEARSAL", "SPEAKER_SCRIPTS", "SUBMISSION_GUIDE"])
+        assert not any(n.lower().endswith((".pptx", ".ppt")) for n in z.namelist())
     print("PASS: sources, 18 report pages, 12 presentation pages, English-only code upload, "
-          "PDF and PPTX in supporting ZIP, all five recovered files in code ZIP, hashes, CRCs and upload limits")
+          "PDF-only presentation submission, all five recovered files in code ZIP, hashes, CRCs and upload limits")
 
 
 if __name__ == "__main__":

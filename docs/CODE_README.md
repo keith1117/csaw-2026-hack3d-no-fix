@@ -37,7 +37,7 @@ pdftoppm -scale-to 2000 -png 'recovered/Pawn Exploded View.pdf' 'evidence/pawn_e
 
 ## Submission files
 
-The separate supporting ZIP contains the presentation PDF, native PowerPoint, recovered CAD and assembly drawing, and selected evidence. Both G-code originals remain in this code ZIP to keep the supporting upload below 10 MB.
+The separate supporting ZIP contains the presentation PDF, recovered CAD and assembly drawing, and selected evidence. Both G-code originals remain in this code ZIP to keep the supporting upload below 10 MB.
 
 To rebuild or check the complete submission, extract the supporting ZIP into this folder, keeping its directory structure, and run the analysis/report commands first. Then run `python src/package_submission.py` and `python src/verify_delivery.py`. The full submission is also available from the team's public repository.
 
