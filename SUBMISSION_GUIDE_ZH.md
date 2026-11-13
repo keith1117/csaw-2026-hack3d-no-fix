@@ -16,9 +16,9 @@
 
 ## 演讲文件
 
-使用最终版 `presentation/output/No_Fix_7_Minute_Final.pptx`。共 12 页，依据最新 18 页报告重做，另有同名 PDF 作为显示备用。正式安排为 **7 分钟演讲 + 3 分钟评委提问**，四位成员每人约 1 分 45 秒。
+使用页间衔接版 `presentation/output/No_Fix_7_Minute_Transitions.pptx`。共 12 页，notes 依据最新 18 页报告组织，说明每一步的依据及其与下一页的关系，另有同名 PDF 作为显示备用。正式安排为 **7 分钟演讲 + 3 分钟评委提问**，四位成员每人约 1 分 45 秒。原 PPT 和原讲稿保留。
 
-每页 speaker notes 均包含对应的英文稿、中文稿、指图提示和问答资料。完整分人讲稿见 `presentation/SPEAKER_SCRIPTS_EN_ZH.md`，排练说明见 `presentation/REHEARSAL_ZH.md`。A 负责第 1-3 页，B 第 4-6 页，C 第 7-9 页，D 第 10-12 页；在 1:45、3:30、5:15 交接，7:00 结束。中英文现场选择一种语言。
+每页 speaker notes 均包含对应的英文稿、中文稿、承接逻辑、指图提示和问答资料。完整分人讲稿见 `presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md`，排练说明见 `presentation/REHEARSAL_ZH.md`。承接逻辑和问答资料供排练与备答使用，不计入朗读。A 负责第 1-3 页，B 第 4-6 页，C 第 7-9 页，D 第 10-12 页；在 1:45、3:30、5:15 交接，7:00 结束。中英文现场选择一种语言。
 
 题目说明要求在 **2026 年 11 月 13 日上午 8 点前**提交 PowerPoint，并在 11 月 13 日展示。PDF 未另外说明时区，请按比赛方通知确认。截图中未显示 PPT 专用栏；如果同一表单另有演讲文件栏，上传 PPTX。如果表单只显示截图中的三个栏，请保留 supporting 包给制造证据，按比赛方给出的演讲提交方式提交 PPTX。
 
