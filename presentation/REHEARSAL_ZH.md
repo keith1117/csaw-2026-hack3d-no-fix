@@ -7,7 +7,7 @@
 | C | 7-9 | 3:30-5:15 | §4、§5、§6 |
 | D | 10-12 | 5:15-7:00 | §7、§8，了解 §9 |
 
-当前使用页间衔接版 No_Fix_7_Minute_Transitions.pptx。完整中英文讲稿见 SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md，也已写入每页 PPT 的 speaker notes。先按英文约每分钟 100-105 词排练，再依据实际指图和换人耗时调整。中文为逐页对应版本。原 SPEAKER_SCRIPTS_EN_ZH.md 保留。新增的承接逻辑是排练提示，不需要朗读。
+当前使用自然口语版 No_Fix_7_Minute_Natural_Notes.pptx。完整中英文讲稿见 SPEAKER_SCRIPTS_NATURAL_EN_ZH.md，也已写入每页 PPT 的 speaker notes。先按英文约每分钟 100-105 词排练，再依据实际指图和换人耗时调整。中文为逐页对应版本。原 SPEAKER_SCRIPTS_EN_ZH.md 保留。新增的承接逻辑是排练提示，不需要朗读。
 
 ## 排练要求
 

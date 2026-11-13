@@ -40,13 +40,13 @@ def check():
     for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
         assert required in report_text, required
     assert pdf.read_bytes() == (ROOT / "output/pdf/No_Fix_Team_Report.pdf").read_bytes()
-    timings = json.loads((ROOT / "presentation/notes_transitions.json").read_text())
+    timings = json.loads((ROOT / "presentation/notes_natural.json").read_text())
     assert len(timings) == 12 and sum(n["seconds"] for n in timings) == 420
     for speaker in "ABCD":
         group = [n for n in timings if n["speaker"] == speaker]
         assert len(group) == 3 and sum(n["seconds"] for n in group) == 105
     assert timings[4]["speech"].startswith("Following the board instructions,")
-    pptx = ROOT / "presentation/output/No_Fix_7_Minute_Transitions.pptx"
+    pptx = ROOT / "presentation/output/No_Fix_7_Minute_Natural_Notes.pptx"
     with zipfile.ZipFile(pptx) as z:
         assert z.testzip() is None
         slides = [n for n in z.namelist() if re.fullmatch(r"ppt/slides/slide\d+.xml", n)]
@@ -65,7 +65,7 @@ def check():
             assert clean(item["zh"]) in clean(note_text), i
             assert clean(item["logic_zh"]) in clean(note_text), i
             assert clean(item["qa"]) in clean(note_text), i
-    assert len(PdfReader(ROOT / "presentation/output/No_Fix_7_Minute_Transitions.pdf").pages) == 12
+    assert len(PdfReader(ROOT / "presentation/output/No_Fix_7_Minute_Natural_Notes.pdf").pages) == 12
 
     manifest = json.loads((ROOT / "submission/manifest.json").read_text())
     for row in manifest["files"]:
@@ -81,10 +81,10 @@ def check():
             if name.startswith("recovered/"):
                 assert hashlib.sha256(z.read(name)).hexdigest() == digest
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
-        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json", "presentation/notes_transitions.json", "presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md"]:
+        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json", "presentation/notes_natural.json", "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md"]:
             assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
     with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
-        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip", "presentation/output/No_Fix_7_Minute_Transitions.pptx", "presentation/output/No_Fix_7_Minute_Transitions.pdf", "presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md"]:
+        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip", "presentation/output/No_Fix_7_Minute_Natural_Notes.pptx", "presentation/output/No_Fix_7_Minute_Natural_Notes.pdf", "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md"]:
             assert z.read(name) == (ROOT / name).read_bytes(), name
     print("PASS: sources, current packages, 18 report pages, 12 slides with bilingual notes, 420 seconds, four 105-second speakers, upload limits")
 

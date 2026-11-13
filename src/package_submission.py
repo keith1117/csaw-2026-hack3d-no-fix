@@ -38,8 +38,9 @@ def main():
 
     code_files = results + recovered + evidence + ["requirements.txt", "SUBMISSION_GUIDE_ZH.md", "docs/report.md",
         "presentation/build_deck.mjs", "presentation/update_notes.mjs", "presentation/notes.json",
-        "presentation/notes_transitions.json", "presentation/REHEARSAL_ZH.md",
-        "presentation/SPEAKER_SCRIPTS_EN_ZH.md", "presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md"]
+        "presentation/notes_transitions.json", "presentation/notes_natural.json", "presentation/REHEARSAL_ZH.md",
+        "presentation/SPEAKER_SCRIPTS_EN_ZH.md", "presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md",
+        "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md"]
     code_files += [str(p.relative_to(ROOT)) for folder in ["inputs", "src"]
                    for p in (ROOT / folder).glob("*") if p.is_file()]
     archive(OUT / "No_Fix_Code.zip", code_files, "NoFix/")
@@ -52,9 +53,9 @@ def main():
         z.writestr("NoFix/README.md", code_readme)
 
     files = ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip",
-             "presentation/output/No_Fix_7_Minute_Transitions.pptx",
-             "presentation/output/No_Fix_7_Minute_Transitions.pdf",
-             "presentation/SPEAKER_SCRIPTS_TRANSITIONS_EN_ZH.md",
+             "presentation/output/No_Fix_7_Minute_Natural_Notes.pptx",
+             "presentation/output/No_Fix_7_Minute_Natural_Notes.pdf",
+             "presentation/SPEAKER_SCRIPTS_NATURAL_EN_ZH.md",
              "presentation/SPEAKER_SCRIPTS_EN_ZH.md", "presentation/REHEARSAL_ZH.md", "SUBMISSION_GUIDE_ZH.md"]
     archive(OUT / "No Fix.zip", files)
     limits = {"No_Fix_Team_Report.pdf": 100_000_000, "No_Fix_Code.zip": 100_000_000,

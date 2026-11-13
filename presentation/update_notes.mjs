@@ -9,10 +9,11 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(here);
 const source = path.resolve(process.argv[2] ?? path.join(here, 'output/No_Fix_7_Minute_Final.pptx'));
 const finalPath = path.resolve(process.argv[3] ?? path.join(here, 'output/No_Fix_7_Minute_Transitions.pptx'));
+const notesPath = path.resolve(process.argv[4] ?? path.join(here, 'notes_transitions.json'));
 const skill = process.env.PRESENTATIONS_SKILL_DIR;
 const python = process.env.ARTIFACT_PYTHON;
 if (!skill || !python) throw new Error('Set PRESENTATIONS_SKILL_DIR and ARTIFACT_PYTHON.');
-const build = path.join(root, 'work/notes_transitions');
+const build = path.join(root, 'work', path.parse(finalPath).name);
 await fs.mkdir(build, { recursive: true });
 await fs.mkdir(path.dirname(finalPath), { recursive: true });
 
@@ -21,7 +22,7 @@ const snapshot = path.join(build, 'input_current.pptx');
 const sourceBytes = await fs.readFile(source);
 await fs.writeFile(snapshot, sourceBytes);
 const sourceHash = createHash('sha256').update(sourceBytes).digest('hex');
-const notes = JSON.parse(await fs.readFile(path.join(here, 'notes_transitions.json'), 'utf8'));
+const notes = JSON.parse(await fs.readFile(notesPath, 'utf8'));
 const presentation = await PresentationFile.importPptx(await FileBlob.load(snapshot));
 if (presentation.slides.items.length !== notes.length) throw new Error('Slide count changed.');
 for (let i = 0; i < notes.length; i++) {
