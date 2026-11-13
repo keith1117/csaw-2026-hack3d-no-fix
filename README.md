@@ -2,6 +2,8 @@
 
 Our solution to **A simple game of Chess**. We inspected the supplied STEP assembly and recovered its manufacturing clues. The report uses our team's first-person account of the work.
 
+The final report was revised on November 13, 2026. Its 18 pages retain the nine-section structure and explain the clue dependencies, failed attempts, corrections, and verification. The revision includes a fresh source-mesh rebuild, independent STEP imports and Pawn decoding, and another check of the recovered archives and G-code.
+
 ## Submission files
 
 | Google Form field | File |
@@ -12,6 +14,8 @@ Our solution to **A simple game of Chess**. We inspected the supplied STEP assem
 | Any additional supporting files | [No_Fix_Supporting.zip](submission/No_Fix_Supporting.zip) |
 
 The [PowerPoint](presentation/output/No_Fix_10_Minute_Presentation.pptx) has 12 slides, English speaker notes, and a 10-minute timing plan. [Chinese rehearsal notes](presentation/REHEARSAL_ZH.md) include a short explanation for each slide and practice questions. The overall [No Fix.zip](submission/No%20Fix.zip) also follows the single-ZIP wording in the problem statement. See the [upload guide](SUBMISSION_GUIDE_ZH.md) before using the form.
+
+The final presentation allowance is seven minutes speaking plus three minutes of questions. The four-speaker scripts supplied in chat use that allowance. The PPTX and its original ten-minute notes remain unchanged.
 
 ## Results
 

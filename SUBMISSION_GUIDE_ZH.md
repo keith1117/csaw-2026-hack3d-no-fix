@@ -6,7 +6,7 @@
 
 | 表单栏 | 本地文件 | 内容 |
 | --- | --- | --- |
-| Team Report | `submission/No_Fix_Team_Report.pdf` | 英文第一人称团队报告，共 10 页 |
+| Team Report | `submission/No_Fix_Team_Report.pdf` | 2026 年 11 月 13 日重写的最终版英文第一人称报告，共 18 页、9 个章节 |
 | Code Upload | `submission/No_Fix_Code.zip` | Python 分析代码、原始输入、已恢复文件、结果及复现说明 |
 | Any additional supporting files | `submission/No_Fix_Supporting.zip` | 恢复的 CAD、G-code、Pawn 原始装配 PDF 和关键证据 |
 
@@ -16,9 +16,9 @@
 
 ## 演讲文件
 
-使用 `presentation/output/No_Fix_10_Minute_Presentation.pptx`。共 12 页，英文讲稿和中文提示都放在每页 speaker notes 中，时间安排合计 10:00。另有同名 PDF 作为显示备用。
+使用 `presentation/output/No_Fix_10_Minute_Presentation.pptx`。共 12 页，另有同名 PDF 作为显示备用。按最终演讲要求，正式安排为 **7 分钟演讲 + 3 分钟评委提问**，四位成员每人约 1 分 45 秒。请采用聊天中重新编写的四人发言稿。
 
-排练时看 `presentation/REHEARSAL_ZH.md`，其中包含逐页时间、英文讲稿、中文要点和问答准备。1121 个英文单词按约每分钟 112 个词安排，建议实际计时排练一次。
+PPT 内置 notes 和 `presentation/REHEARSAL_ZH.md` 保留原来的 10 分钟版本，可用于学习内容和准备问答；此次报告重写没有修改 PPT。正式排练请按新的 7 分钟四人讲稿计时。
 
 题目说明要求在 **2026 年 11 月 13 日上午 8 点前**提交 PowerPoint，并在 11 月 13 日展示。PDF 未另外说明时区，请按比赛方通知确认。截图中未显示 PPT 专用栏；如果同一表单另有演讲文件栏，上传 PPTX。如果表单只显示截图中的三个栏，请保留 supporting 包给制造证据，按比赛方给出的演讲提交方式提交 PPTX。
 

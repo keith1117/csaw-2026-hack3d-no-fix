@@ -28,7 +28,12 @@ def check():
             assert z.read("Pawn Files/" + name, pwd=b"Queen") == (ROOT / "recovered" / name).read_bytes()
 
     pdf = ROOT / "submission/No_Fix_Team_Report.pdf"
-    assert len(PdfReader(pdf).pages) == 10
+    report = PdfReader(pdf)
+    assert len(report.pages) == 18
+    assert len(report.outline) == 9
+    report_text = "\n".join(p.extract_text() for p in report.pages)
+    for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
+        assert required in report_text, required
     assert pdf.read_bytes() == (ROOT / "output/pdf/No_Fix_Team_Report.pdf").read_bytes()
     pptx = ROOT / "presentation/output/No_Fix_10_Minute_Presentation.pptx"
     with zipfile.ZipFile(pptx) as z:
@@ -55,7 +60,13 @@ def check():
         for name, digest in hashes.items():
             if name.startswith("recovered/"):
                 assert hashlib.sha256(z.read(name)).hexdigest() == digest
-    print("PASS: source hashes, decodes, ZIP contents, 10 report pages, 12 slides/notes, 600 seconds, upload limits")
+    with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
+        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json"]:
+            assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
+    with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
+        for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip"]:
+            assert z.read(name) == (ROOT / name).read_bytes(), name
+    print("PASS: source hashes, decodes, current ZIP contents, 18 report pages/9 sections, 12 slides/notes, upload limits")
 
 
 if __name__ == "__main__":

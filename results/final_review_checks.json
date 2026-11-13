@@ -1,0 +1,87 @@
+{
+  "source_hashes_verified": 8,
+  "original_inputs_match_distribution": true,
+  "fresh_step_import_solid_instances": {
+    "inputs/Chess Board.STEP": 129,
+    "recovered/Pawn.STEP": 31,
+    "recovered/Knight-Full Assm.step": 61
+  },
+  "max_center_difference_from_saved_geometry_mm": 0.0,
+  "occupancy_redecoded_from_fresh_centers": true,
+  "pawn_center_grid_max_residual_mm": 5.2106482306657895,
+  "reverse_rank_order_result": [
+    "YPu63d0kpx",
+    "1101"
+  ],
+  "zip_password_checks": {
+    "985765": "RuntimeError",
+    "Hack3d26": "RuntimeError",
+    "Hack3d26-2": "RuntimeError",
+    "AlF357": "RuntimeError",
+    "Queen": "both files extracted; CRC checks passed"
+  },
+  "independent_gcode_scan": [
+    {
+      "file": "PI3MK2_K14.gcode",
+      "layer_labels_contiguous_from_zero": true,
+      "numbered_layers": 78,
+      "maximum_explicit_motion_z_mm": 15.75,
+      "tail_lines": [
+        "",
+        ";End of Gcode",
+        ";SETTING_3 {\"global_quality\": \"[general]\\\\nversion = 4\\\\nname = Coarse #2\\\\ndefi",
+        ";SETTING_3 nition = prusa_i3_mk2\\\\n\\\\n[metadata]\\\\ntype = quality_changes\\\\nqual",
+        ";SETTING_3 ity_type = coarse\\\\nsetting_version = 20\\\\n\\\\n[values]\\\\nadhesion_typ",
+        ";SETTING_3 e = brim\\\\nlayer_height = 0.2\\\\nmaterial_bed_temperature = 80\\\\nsuppo",
+        ";SETTING_3 rt_enable = True\\\\nsupport_structure = tree\\\\n\\\\n\", \"extruder_quality",
+        ";SETTING_3 \": [\"[general]\\\\nversion = 4\\\\nname = Coarse #2\\\\ndefinition = prusa_",
+        ";SETTING_3 i3_mk2\\\\n\\\\n[metadata]\\\\ntype = quality_changes\\\\nquality_type = coar",
+        ";SETTING_3 se\\\\nsetting_version = 20\\\\nposition = 0\\\\n\\\\n[values]\\\\nbottom_layer",
+        ";SETTING_3 s = 5\\\\ninfill_sparse_density = 10\\\\nmaterial_print_temperature = 215",
+        ";SETTING_3 \\\\nraft_margin = 5\\\\ntop_layers = 5\\\\n\\\\n\"]}"
+      ]
+    },
+    {
+      "file": "PI3MK2_King.gcode",
+      "layer_labels_contiguous_from_zero": true,
+      "numbered_layers": 336,
+      "maximum_explicit_motion_z_mm": 67.15,
+      "tail_lines": [
+        "M104 S0",
+        ";End of Gcode",
+        ";SETTING_3 {\"global_quality\": \"[general]\\\\nversion = 4\\\\nname = Coarse #2\\\\ndefi",
+        ";SETTING_3 nition = prusa_i3_mk2\\\\n\\\\n[metadata]\\\\ntype = quality_changes\\\\nqual",
+        ";SETTING_3 ity_type = coarse\\\\nsetting_version = 20\\\\n\\\\n[values]\\\\nadhesion_typ",
+        ";SETTING_3 e = brim\\\\nlayer_height = 0.2\\\\nmaterial_bed_temperature = 80\\\\nsuppo",
+        ";SETTING_3 rt_enable = True\\\\nsupport_structure = tree\\\\n\\\\n\", \"extruder_quality",
+        ";SETTING_3 \": [\"[general]\\\\nversion = 4\\\\nname = Coarse #2\\\\ndefinition = prusa_",
+        ";SETTING_3 i3_mk2\\\\n\\\\n[metadata]\\\\ntype = quality_changes\\\\nquality_type = coar",
+        ";SETTING_3 se\\\\nsetting_version = 20\\\\nposition = 0\\\\n\\\\n[values]\\\\nbottom_layer",
+        ";SETTING_3 s = 5\\\\ninfill_sparse_density = 10\\\\nmaterial_print_temperature = 215",
+        ";SETTING_3 \\\\nraft_margin = 5\\\\ntop_layers = 5\\\\n\\\\n\"]}"
+      ]
+    }
+  ],
+  "review_date": "2026-11-13",
+  "fresh_source_meshing_and_geometry_decode": "passed",
+  "short_link_recheck": [
+    {
+      "url": "https://tinyurl.com/Hack3d26",
+      "status": 200,
+      "destination": "https://www.eos.info/var/assets/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/aluminium/material_datasheet_eos_aluminium_alf357_premium_en.pdf"
+    },
+    {
+      "url": "https://tinyurl.com/Hack3d26-2",
+      "status": 200,
+      "destination": "https://drive.google.com/file/d/1vgwSromaUAm5hw45NycKgomDprsVD3Lu/view?usp=sharing"
+    }
+  ],
+  "report_checks": {
+    "pages": 18,
+    "section_bookmarks": 9,
+    "clickable_links": 8,
+    "all_pages_visually_reviewed": true,
+    "render_warnings": 0
+  },
+  "presentation_files_unchanged": true
+}
