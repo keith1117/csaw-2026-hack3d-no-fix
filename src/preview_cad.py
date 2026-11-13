@@ -3,9 +3,31 @@
 from pathlib import Path
 import json
 import numpy as np
-from analyze import mesh_step
+from analyze import mesh_step, triangles
 import matplotlib.pyplot as plt
+from matplotlib.collections import PolyCollection
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+
+def king_cutaways():
+    t = triangles(89)
+    center = (t.reshape(-1, 3).min(0) + t.reshape(-1, 3).max(0)) / 2
+    fig, axes = plt.subplots(1, 3, figsize=(18, 12))
+    for j, (ax, clip) in enumerate(zip(axes, [None, 2, 0])):
+        q = t if clip is None else t[np.all(t[:, :, clip] < center[clip] + 1e-4, axis=1)]
+        a, b, c = (0, 1, 2) if j < 2 else (2, 1, 0)
+        q = q[np.argsort(np.round(q[:, :, c].mean(1), 4), kind="stable")]
+        normals = np.cross(q[:, 1] - q[:, 0], q[:, 2] - q[:, 0])
+        normals /= np.maximum(np.linalg.norm(normals, axis=1)[:, None], 1e-12)
+        shade = np.clip(.82 * (.25 + .75 * np.abs(normals @ np.array([.3, .4, .8]))), .05, 1)
+        ax.add_collection(PolyCollection(q[:, :, [a, b]], facecolors=np.repeat(shade[:, None], 3, axis=1),
+                                        edgecolors="none", antialiased=False))
+        ax.autoscale()
+        ax.set_aspect("equal")
+        ax.axis("off")
+        ax.set_title(f"solid 89, clip {clip}", color="black")
+    fig.savefig("evidence/solid_89_cut.png", dpi=200, bbox_inches="tight")
+    plt.close(fig)
 
 
 def preview(filename, label, expected):
@@ -41,6 +63,7 @@ def preview(filename, label, expected):
 
 
 if __name__ == "__main__":
+    king_cutaways()
     summaries = [preview("Pawn.STEP", "Pawn", 31),
                  preview("Knight-Full Assm.step", "Knight", 61)]
     Path("results/recovered_cad_checks.json").write_text(json.dumps(summaries, indent=2) + "\n")

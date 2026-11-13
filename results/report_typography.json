@@ -1,0 +1,14 @@
+{
+  "font_family": "Times New Roman",
+  "embedded_fonts": [
+    "/AAAAAA+TimesNewRomanPS-BoldMT",
+    "/AAAAAA+TimesNewRomanPS-ItalicMT",
+    "/AAAAAA+TimesNewRomanPSMT"
+  ],
+  "all_pdf_text_black": true,
+  "checked_text_operations": 801,
+  "pages": 18,
+  "report_text_unchanged": true,
+  "source_geometry_lettering_and_original_drawing_preserved": true,
+  "all_pages_visually_reviewed": true
+}

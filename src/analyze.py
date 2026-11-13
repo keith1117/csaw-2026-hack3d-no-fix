@@ -10,6 +10,9 @@ os.environ.setdefault("MPLCONFIGDIR", "work/mpl")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.rcParams.update({"font.family": "Times New Roman", "text.color": "black",
+                     "axes.labelcolor": "black", "axes.titlecolor": "black",
+                     "xtick.color": "black", "ytick.color": "black"})
 from matplotlib.collections import PolyCollection
 import numpy as np
 from PIL import Image
@@ -155,7 +158,7 @@ def main():
     for row in range(8):
         for col in range(8):
             ax.text(col, row, str(occupancy[row, col]), ha="center", va="center",
-                    color="white" if occupancy[row, col] else "#172529", fontsize=18)
+                    color="black", fontsize=18)
     ax.set_title("Pawn occupancy, rank 8 first")
     fig.savefig("evidence/occupancy.png", dpi=180, bbox_inches="tight")
     plt.close(fig)

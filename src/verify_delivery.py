@@ -31,6 +31,11 @@ def check():
     report = PdfReader(pdf)
     assert len(report.pages) == 18
     assert len(report.outline) == 9
+    for page in report.pages:
+        for font in page["/Resources"]["/Font"].values():
+            font = font.get_object()
+            assert "TimesNewRoman" in str(font["/BaseFont"]), font["/BaseFont"]
+            assert "/FontFile2" in font["/FontDescriptor"].get_object()
     report_text = "\n".join(p.extract_text() for p in report.pages)
     for required in ["November 13, 2026", "Hack3d26-2", "Queen", "15.75", "61 solid instances"]:
         assert required in report_text, required
@@ -61,7 +66,7 @@ def check():
             if name.startswith("recovered/"):
                 assert hashlib.sha256(z.read(name)).hexdigest() == digest
     with zipfile.ZipFile(ROOT / "submission/No_Fix_Code.zip") as z:
-        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json"]:
+        for name in ["docs/report.md", "src/build_report.py", "src/verify_delivery.py", "results/final_review_checks.json", "results/report_typography.json"]:
             assert z.read("NoFix/" + name) == (ROOT / name).read_bytes(), name
     with zipfile.ZipFile(ROOT / "submission/No Fix.zip") as z:
         for name in ["submission/No_Fix_Team_Report.pdf", "submission/No_Fix_Code.zip", "submission/No_Fix_Supporting.zip"]:

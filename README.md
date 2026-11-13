@@ -4,6 +4,8 @@ Our solution to **A simple game of Chess**. We inspected the supplied STEP assem
 
 The final report was revised on November 13, 2026. Its 18 pages retain the nine-section structure and explain the clue dependencies, failed attempts, corrections, and verification. The revision includes a fresh source-mesh rebuild, independent STEP imports and Pawn decoding, and another check of the recovered archives and G-code.
 
+The report text and our chart labels use Times New Roman in black. The PDF embeds its fonts. The CAD lettering and recovered source drawing retain their original appearance.
+
 ## Submission files
 
 | Google Form field | File |
@@ -53,6 +55,8 @@ pdftoppm -scale-to 2000 -png 'recovered/Pawn Exploded View.pdf' 'evidence/pawn_e
 ```
 
 The presentation source is [build_deck.mjs](presentation/build_deck.mjs). It uses the Artifact Tool runtime bundled with Codex. The exported PPTX is included for normal PowerPoint use; Python is only needed for the analysis and PDF report.
+
+The report renderer loads Times New Roman from `/System/Library/Fonts/Supplemental` on macOS. To rebuild on another system, point `font_dir` in `src/build_report.py` to the installed Times New Roman files and make that family available to Matplotlib. Viewing the delivered PDF does not require installing the fonts.
 
 ## What the checks establish
 

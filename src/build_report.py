@@ -14,40 +14,38 @@ from PIL import Image as PILImage
 ROOT = Path(__file__).resolve().parents[1]
 WIDTH = 504
 font_dir = Path("/System/Library/Fonts/Supplemental")
-body_font, title_font, italic_font, mono_font = "Times-Roman", "Helvetica-Bold", "Times-Italic", "Courier"
-if (font_dir / "Times New Roman.ttf").exists():
-    for name, filename in [("NoFixTimes", "Times New Roman.ttf"), ("NoFixTimesBold", "Times New Roman Bold.ttf"),
-                           ("NoFixTimesItalic", "Times New Roman Italic.ttf"),
-                           ("NoFixTimesBoldItalic", "Times New Roman Bold Italic.ttf"),
-                           ("NoFixArialBold", "Arial Bold.ttf"), ("NoFixMono", "Courier New.ttf")]:
-        pdfmetrics.registerFont(TTFont(name, str(font_dir / filename)))
-    pdfmetrics.registerFontFamily("NoFixTimes", normal="NoFixTimes", bold="NoFixTimesBold",
-                                  italic="NoFixTimesItalic", boldItalic="NoFixTimesBoldItalic")
-    body_font, title_font, italic_font, mono_font = "NoFixTimes", "NoFixArialBold", "NoFixTimesItalic", "NoFixMono"
+for name, filename in [("NoFixTimes", "Times New Roman.ttf"), ("NoFixTimesBold", "Times New Roman Bold.ttf"),
+                       ("NoFixTimesItalic", "Times New Roman Italic.ttf"),
+                       ("NoFixTimesBoldItalic", "Times New Roman Bold Italic.ttf")]:
+    pdfmetrics.registerFont(TTFont(name, str(font_dir / filename)))
+pdfmetrics.registerFontFamily("NoFixTimes", normal="NoFixTimes", bold="NoFixTimesBold",
+                              italic="NoFixTimesItalic", boldItalic="NoFixTimesBoldItalic")
+body_font, title_font, italic_font = "NoFixTimes", "NoFixTimesBold", "NoFixTimesItalic"
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(name="ReportBody", fontName=body_font, fontSize=11,
-                          leading=14.5, spaceAfter=8))
+                          leading=14.5, textColor=colors.black, spaceAfter=8))
 styles.add(ParagraphStyle(name="ReportTitle", fontName=title_font, fontSize=22,
-                          leading=27, textColor=colors.HexColor("#173f42"), spaceAfter=14,
+                          leading=27, textColor=colors.black, spaceAfter=14,
                           keepWithNext=True))
 styles.add(ParagraphStyle(name="ReportHeading", fontName=title_font, fontSize=13,
-                          leading=17, spaceBefore=7, spaceAfter=8, keepWithNext=True))
+                          leading=17, textColor=colors.black, spaceBefore=7, spaceAfter=8, keepWithNext=True))
 styles.add(ParagraphStyle(name="CaptionSmall", fontName=italic_font, fontSize=9,
-                          leading=11, textColor=colors.HexColor("#465557"), spaceAfter=10))
-styles.add(ParagraphStyle(name="CellSmall", fontName=body_font, fontSize=9.5, leading=12))
+                          leading=11, textColor=colors.black, spaceAfter=10))
+styles.add(ParagraphStyle(name="CellSmall", fontName=body_font, fontSize=9.5, leading=12,
+                          textColor=colors.black))
 
 
 def inline(text):
     text = html.escape(text)
-    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<link href="\2" color="#125a70">\1</link>', text)
+    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<link href="\2" color="black">\1</link>', text)
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
-    text = re.sub(r"`(.+?)`", lambda m: f'<font name="{mono_font}" size="9">{m.group(1)}</font>', text)
+    text = re.sub(r"`(.+?)`", lambda m: f'<font name="{body_font}" size="9">{m.group(1)}</font>', text)
     return text
 
 
 def page_number(canvas, doc):
-    canvas.setFont("Helvetica", 9)
-    canvas.setFillColor(colors.HexColor("#667578"))
+    canvas.setFont(body_font, 9)
+    canvas.setFillColor(colors.black)
     canvas.drawString(54, 28, "No Fix - CSAW 2026 Hack3D Final")
     canvas.drawRightString(558, 28, str(doc.page))
 
@@ -114,7 +112,8 @@ def build():
             left, right, height = match.groups()
             images = [report_image(name, WIDTH / 2 - 12, int(height)) for name in (left, right)]
             pair = Table([[images[0], images[1]]], colWidths=[WIDTH / 2] * 2)
-            pair.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            pair.setStyle(TableStyle([("FONTNAME", (0, 0), (-1, -1), body_font),
+                                     ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                                      ("ALIGN", (0, 0), (-1, -1), "CENTER")]))
             story.append(KeepTogether([pair, Spacer(1, 7)]))
         elif line.startswith("# "):
@@ -142,6 +141,7 @@ def build():
             data = [[Paragraph(inline(cell), styles["CellSmall"]) for cell in row] for row in rows]
             table = Table(data, colWidths=widths, repeatRows=1, hAlign="LEFT")
             table.setStyle(TableStyle([
+                ("FONTNAME", (0, 0), (-1, -1), body_font),
                 ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e2eae8")),
                 ("LINEBELOW", (0, 0), (-1, 0), .5, colors.HexColor("#627a7c")),
                 ("LINEBELOW", (0, 1), (-1, -1), .25, colors.HexColor("#d4d9d7")),
@@ -166,6 +166,7 @@ def build():
     output.parent.mkdir(parents=True, exist_ok=True)
     doc = ReportDocument(str(output), pagesize=(612, 792), rightMargin=54,
                             leftMargin=54, topMargin=45, bottomMargin=48,
+                            initialFontName=body_font,
                             title="No Fix - CSAW 2026 Hack3D Final Report", author="No Fix",
                             subject="Final report: clue recovery, decoding, file checks, and limitations")
     doc.build(story, onFirstPage=page_number, onLaterPages=page_number)

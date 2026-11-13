@@ -9,6 +9,9 @@ os.environ.setdefault("MPLCONFIGDIR", "work/mpl")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.rcParams.update({"font.family": "Times New Roman", "text.color": "black",
+                     "axes.labelcolor": "black", "axes.titlecolor": "black",
+                     "xtick.color": "black", "ytick.color": "black"})
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 import numpy as np
 

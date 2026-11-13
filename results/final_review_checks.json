@@ -81,7 +81,10 @@
     "section_bookmarks": 9,
     "clickable_links": 8,
     "all_pages_visually_reviewed": true,
-    "render_warnings": 0
+    "render_warnings": 0,
+    "font_family": "Times New Roman",
+    "text_color": "black",
+    "embedded_fonts_verified": true
   },
   "presentation_files_unchanged": true
 }
